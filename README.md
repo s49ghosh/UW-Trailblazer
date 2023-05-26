@@ -17,6 +17,29 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install all dep
 pip install -r requirements.txt
 ```
 
+## How to setup the database
+You should install MySQL based on your system (https://dev.mysql.com/doc/refman/8.0/en/installing.html)
+
+run
+```
+$ sudo mysql -u root
+$ CREATE USER 'CS348USER'@'localhost' IDENTIFIED BY 'mypassword';
+$ GRANT ALL PRIVILEGES ON *.* TO 'CS348USER'@'localhost' WITH GRANT OPTION;
+$ FLUSH PRIVILEGES;
+$ exit
+$ mysql -u myportfolio -p
+```
+```
+$ CREATE DATABASE testDB;
+```
+
+.env file
+URL=localhost:5000
+MYSQL_HOST=localhost
+MYSQL_USER=CS348USER
+MYSQL_PASSWORD=mypassword
+MYSQL_DATABASE=testDB
+
 ## Usage
 
 Create a .env file using the example.env template (make a copy using the variables inside of the template)

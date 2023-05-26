@@ -32,13 +32,14 @@ $ mysql -u myportfolio -p
 ```
 $ CREATE DATABASE testDB;
 ```
-
+```
 .env file
 URL=localhost:5000
 MYSQL_HOST=localhost
 MYSQL_USER=CS348USER
 MYSQL_PASSWORD=mypassword
 MYSQL_DATABASE=testDB
+```
 
 ## Usage
 

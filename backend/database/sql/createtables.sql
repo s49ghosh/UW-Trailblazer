@@ -18,11 +18,11 @@ CREATE TABLE subject (
     avg_rating DECIMAL(3,2) NOT NULL
 );
 
-CREATE TABLE rating (
-    course_code INT PRIMARY KEY NOT NULL,
-    rating INT NOT NULL,
+CREATE TABLE ratings (
+    course_code INT NOT NULL,
     uid INT NOT NULL,
-    FOREIGN KEY (uid) REFERENCES user (uid)
+    rating INT NOT NULL,
+    primary key(course_code, uid)
 );
 
 CREATE TABLE courses (

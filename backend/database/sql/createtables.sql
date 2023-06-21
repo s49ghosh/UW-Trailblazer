@@ -19,7 +19,7 @@ CREATE TABLE subject (
 );
 
 CREATE TABLE ratings (
-    course_code INT NOT NULL,
+    course_code TEXT NOT NULL,
     uid INT NOT NULL,
     rating INT NOT NULL,
     primary key(course_code, uid),
@@ -28,7 +28,7 @@ CREATE TABLE ratings (
 );
 
 CREATE TABLE courses (
-    course_code INT PRIMARY KEY NOT NULL,
+    course_code TEXT PRIMARY KEY NOT NULL,
     course_name TEXT NOT NULL,
     subject_code INT,
     rating INT,
@@ -47,11 +47,11 @@ CREATE TABLE user (
     last_name TEXT,
     friends TEXT,
     start_year INT NOT NULL,
-    taken_courses TEXT,
     planned_courses TEXT
 );
 
 CREATE TABLE takenCourses(
     uid INT NOT NULL,
-    course_code TEXT,
+    course_code TEXT NOT NULL,
+    primary key(uid, course_code)
 )

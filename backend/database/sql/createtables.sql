@@ -22,7 +22,9 @@ CREATE TABLE ratings (
     course_code INT NOT NULL,
     uid INT NOT NULL,
     rating INT NOT NULL,
-    primary key(course_code, uid)
+    primary key(course_code, uid),
+    FOREIGN KEY (course_code) REFERENCES courses (course_code),
+    FOREIGN KEY (uid) REFERENCES user (uid)
 );
 
 CREATE TABLE courses (
@@ -48,3 +50,8 @@ CREATE TABLE user (
     taken_courses TEXT,
     planned_courses TEXT
 );
+
+CREATE TABLE takenCourses(
+    uid INT NOT NULL,
+    course_code TEXT,
+)

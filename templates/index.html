@@ -19,5 +19,39 @@
         <input type="text" name="startyear" placeholder="start year" required>
         <button type="submit">Add User</button>
     </form>
+
+    <h1>Course Search</h1>
+    <form method="POST" action="{{ url_for('search') }}">
+        <input type="text" name="query" placeholder="Enter a course title">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if message %}
+        <p>{{ message }}</p>
+    {% elif courses %}
+        <h2>Search Results for "{{ query }}"</h2>
+        <ul>
+        {% for course in courses %}
+            <li>
+                <h3>{{ course.course_name }}</h3>
+                <p>{{ course.course_code }}</p>
+                <form method="POST" action="{{ url_for('add_course') }}">
+                    <input type="hidden" name="course_code" value="{{ course.course_code }}">
+                    <button type="submit">Add Course</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if results %}
+        <h2>Search Results</h2>
+        <ul>
+        {% for item in results %}
+            <li>{{ item }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
 </body>
 </html>

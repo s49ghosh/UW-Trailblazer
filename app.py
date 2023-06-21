@@ -41,6 +41,29 @@ def add_user():
 
     return 'User added successfully'
 
+@app.route('/search', methods=['POST'])
+def search():
+    query = request.form.get('query')
+    if query:
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM courses WHERE course_name LIKE %s", ('%' + query + '%',))
+        courses = cur.fetchall()
+        cur.close()
+        return render_template('index.html', courses=courses, query=query)
+    else:
+        return render_template('index.html', message='Please enter a search query.')
+
+@app.route('/add_course', methods=['POST'])
+def add_course():
+    course_code = request.form.get('course_code')
+    if course_code:
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO UserTakenCourses (uid, course_id) VALUES (%s, %s)", ('1234', course_code)) #replace test with user login!
+        mysql.connection.commit()
+        cur.close()
+        return 'Course added to selectedCourses!'
+    else:
+        return 'Invalid request.'
 
 if __name__ == '__main__':
     app.run()

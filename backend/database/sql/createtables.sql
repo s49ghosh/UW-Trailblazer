@@ -19,7 +19,7 @@ CREATE TABLE subject (
 );
 
 CREATE TABLE ratings (
-    course_code TEXT NOT NULL,
+    course_code VARCHAR(255) NOT NULL,
     uid INT NOT NULL,
     rating INT NOT NULL,
     primary key(course_code, uid),
@@ -28,14 +28,14 @@ CREATE TABLE ratings (
 );
 
 CREATE TABLE courses (
-    course_code TEXT PRIMARY KEY NOT NULL,
+    course_code VARCHAR(255) PRIMARY KEY NOT NULL,
     course_name TEXT NOT NULL,
     subject_code INT,
     rating INT,
     enroll_cap INT NOT NULL,
     term_avail INT NOT NULL,
     prereqs TEXT,
-    leads_to INT,
+    leads_to VARCHAR(255),
     anti_reqs TEXT,
     FOREIGN KEY (subject_code) REFERENCES subject (subject_code),
     FOREIGN KEY (leads_to) REFERENCES courses (course_code)

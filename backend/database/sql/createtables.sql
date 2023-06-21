@@ -52,6 +52,6 @@ CREATE TABLE user (
 
 CREATE TABLE takenCourses(
     uid INT NOT NULL,
-    course_code TEXT NOT NULL,
+    course_code VARCHAR(255) NOT NULL,
     primary key(uid, course_code)
 )

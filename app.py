@@ -5,17 +5,10 @@ import logging
 app = Flask(__name__)
 
 # Configure MySQL
-''''
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'CS348USER'
 app.config['MYSQL_PASSWORD'] = 'admin'
 app.config['MYSQL_DB'] = 'TestDB'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-'''
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Jingman20020813'
-app.config['MYSQL_DB'] = 'testdb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 

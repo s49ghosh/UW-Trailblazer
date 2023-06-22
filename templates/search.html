@@ -36,7 +36,8 @@
                 <form method="POST" action="{{ url_for('add_course') }}">
                     <input type="text" name="uid" placeholder="user id">
                     <input type="hidden" name="course_code" value="{{ course.course_code }}">
-                    <button type="submit">Add Course</button>
+                    <button type="submit", name = 'action', value = "Taken">Add Course as Taken</button>
+                    <button type="submit", name = 'action', value = "Planned">Add Course to Plan</button>
                 </form>
             </li>
         {% endfor %}

@@ -74,17 +74,36 @@ def search():
 def add_course():
     course_code = request.form.get('course_code')
     userid = request.form.get('uid')
+    value = request.form.get('action')
     if course_code:
-        cur = mysql.connection.cursor()
-        try:
-            cur.execute(f'INSERT INTO UserTakenCourses (uid, course_code) VALUES ({userid}, "{course_code}")') #replace test with user login!            
-            mysql.connection.commit()
-            cur.close()
-            return 'Course added to selectedCourses!'
-        except:
-            return f'{course_code} already added for user {userid}'
+        if value == 'Planned':
+            cur = mysql.connection.cursor()
+            try:
+                cur.execute(f'SELECT prereq FROM requirements WHERE course_code = "{course_code}"')
+                requirements = [row['prereq'] for row in cur.fetchall()]
+                cur.execute(f'SELECT course_code FROM UserTakenCourses WHERE uid = "{userid}"')
+                taken = [row['course_code'] for row in cur.fetchall()]
+                for course in requirements:
+                    if course not in taken:
+                        return 'Missing Prerequisite!'
+                cur.execute(f'INSERT INTO UserPlannedCourses (uid, course_code) VALUES ({userid}, "{course_code}")') #replace test with user login!            
+                mysql.connection.commit()
+                cur.close()
+                return 'Course added to Planned Courses!'  
+            except:
+                return f'{course_code} already added for user {userid}'
+        elif value == 'Taken':
+            cur = mysql.connection.cursor()
+            try:
+                cur.execute(f'INSERT INTO UserTakenCourses (uid, course_code) VALUES ({userid}, "{course_code}")') #replace test with user login!            
+                mysql.connection.commit()
+                cur.close()
+                return 'Course added to Taken Courses!'
+            except:
+                return f'{course_code} already added for user {userid}'
     else:
         return 'No course code submitted'
+
 @app.route('/', methods=['GET'])
 def ratings():
     user_id = "1"

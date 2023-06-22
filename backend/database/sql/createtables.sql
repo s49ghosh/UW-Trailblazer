@@ -4,7 +4,7 @@
 CREATE TABLE Users (
     uid INT PRIMARY KEY NOT NULL,
     first_name TEXT,
-    last_name TEXT
+    last_name TEXT,
     start_year INT
 );
 
@@ -67,4 +67,12 @@ CREATE TABLE Ratings (
     PRIMARY KEY (uid, course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
+);
+
+CREATE TABLE Requirements (
+    course_code VARCHAR(10) NOT NULL,
+    prereq VARCHAR(10) NOT NULL,
+    PRIMARY KEY (course_code, prereq),
+    FOREIGN KEY (course_code) REFERENCES Courses(course_code),
+    FOREIGN KEY (prereq) REFERENCES Courses(course_code)
 );

@@ -4,7 +4,7 @@
 CREATE TABLE Users (
     uid INT PRIMARY KEY NOT NULL,
     first_name TEXT,
-    last_name TEXT,
+    last_name TEXT
 );
 
 
@@ -32,7 +32,7 @@ CREATE TABLE Terms (
     course_code VARCHAR(10) , 
     start_date DATE,
     end_date DATE,
-    term_season VARCHAR(10)
+    term_season VARCHAR(10),
     PRIMARY KEY (term_id, course_code),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
 );

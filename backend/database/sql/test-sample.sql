@@ -27,7 +27,6 @@ VALUES
     ('COURSE2', 'Introduction to Programming', 'SUB2', 200, 40),
     ('COURSE3', 'Classical Mechanics', 'SUB3', 300, 30);
 
-select * from Courses;
 -- Insert sample data into UserFriends table
 INSERT INTO UserFriends (uid, friend_id)
 VALUES

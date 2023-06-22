@@ -51,11 +51,11 @@ def ratings():
     cur = mysql.connection.cursor()
 
     cur.execute("""
-        SELECT takenCourses.course_code, ratings.rating
-        FROM user
-        INNER JOIN takenCourses ON user.uid = takenCourses.uid
-        LEFT JOIN ratings ON takenCourses.course_code = ratings.course_code and user.uid = ratings.uid
-        WHERE user.uid = %s
+        SELECT UserTakenCourses.course_code, Ratings.rating
+        FROM Users
+        INNER JOIN UserTakenCourses ON Users.uid = UserTakenCourses.uid
+        LEFT JOIN Ratings ON UserTakenCourses.course_code = Ratings.course_code and Users.uid = Ratings.uid
+        WHERE Users.uid = %s
     """, (user_id))
 
     courses = [{'course_code': row['course_code'], 'rating': row['rating'] if row['rating'] is not None else ""} for row in cur.fetchall()]
@@ -70,10 +70,10 @@ def submit_ratings():
 
     for course_code, rating in request.form.items():
         cur.execute("""
-            INSERT INTO ratings (course_code, uid, rating)
+            INSERT INTO Ratings (uid, course_code, rating)
             VALUES (%s, %s, %s)
             ON DUPLICATE KEY UPDATE rating = %s
-        """, (course_code, user_id, rating, rating))
+        """, (course_code, rating, user_id, rating))
 
     mysql.connection.commit()
 

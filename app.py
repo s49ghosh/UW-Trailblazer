@@ -31,7 +31,7 @@ def index():
 
     takenCourses = ratings()
     
-    return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown )
+    return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown)
 
 
 @app.route('/add', methods=['POST'])
@@ -73,16 +73,16 @@ def search():
 @app.route('/add_course', methods=['POST'])
 def add_course():
     course_code = request.form.get('course_code')
-    userid = '123'
+    userid = request.form.get('uid')
     if course_code:
         cur = mysql.connection.cursor()
         try:
-            cur.execute("INSERT INTO UserTakenCourses (uid, course_id) VALUES (%s, %s)", (userid, course_code)) #replace test with user login!            
+            cur.execute(f'INSERT INTO UserTakenCourses (uid, course_code) VALUES ({userid}, "{course_code}")') #replace test with user login!            
             mysql.connection.commit()
             cur.close()
             return 'Course added to selectedCourses!'
         except:
-            return f'Course already added for user {userid}'
+            return f'{course_code} already added for user {userid}'
     else:
         return 'No course code submitted'
 @app.route('/', methods=['GET'])

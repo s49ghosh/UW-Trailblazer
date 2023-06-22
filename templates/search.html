@@ -34,6 +34,7 @@
                 <p>Course Rating: {{ course.rating }}</p>
                 
                 <form method="POST" action="{{ url_for('add_course') }}">
+                    <input type="text" name="uid" placeholder="user id">
                     <input type="hidden" name="course_code" value="{{ course.course_code }}">
                     <button type="submit">Add Course</button>
                 </form>

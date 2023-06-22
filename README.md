@@ -32,6 +32,7 @@ $ mysql -u myportfolio -p
 ```
 $ CREATE DATABASE testDB;
 ```
+For now - manually change the fields in the app.py file, we are not using .env files at the moment.
 ```
 .env file
 URL=localhost:5000

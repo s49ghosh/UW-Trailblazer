@@ -1,27 +1,10 @@
+<!-- search.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flask MySQL App</title>
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Search Results</title>
 </head>
 <body>
-    <h1>Users</h1>
-    <ul>
-        {% for user in users %}
-        <li>{{ user.uid }} {{ user.first_name }} {{ user.last_name }} {{ user.start_year }} </li>
-        {% endfor %}
-    </ul>
-
-    <h2>Add User</h2>
-    <form action="/add" method="post">
-        <input type="text" name="uid" placeholder="waterloo id" required>
-        <input type="text" name="fname" placeholder="first name" required>
-        <input type="text" name="lname" placeholder="last name" required>
-        <input type="text" name="startyear" placeholder="start year" required>
-        <button type="submit">Add User</button>
-    </form>
-
-
     <h1>Course Search</h1>
     <form method="POST" action="{{ url_for('search') }}">
         <input type="text" name="query" placeholder="Enter a course title">
@@ -58,30 +41,5 @@
         {% endfor %}
         </ul>
     {% endif %}
-
-    {% if results %}
-        <h2>Search Results</h2>
-        <ul>
-        {% for item in results %}
-            <li>{{ item }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-
-    <h2>Ratings</h2>
-
-    <form action="/submit-ratings" method="post">
-        <table>
-            {% for course in takenCourses %}
-            <tr>
-                <td>{{ course.course_code }}</td>
-                <td><input type="text" name="{{ course.course_code }}" value="{{ course.rating }}" /></td>
-                <td>out of 5</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <input type="submit" value="Submit">
-    </form>
-
 </body>
 </html>

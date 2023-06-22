@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_mysqldb import MySQL
+import logging
 
 app = Flask(__name__)
 
@@ -9,6 +10,7 @@ app.config['MYSQL_USER'] = 'CS348USER'
 app.config['MYSQL_PASSWORD'] = 'admin'
 app.config['MYSQL_DB'] = 'TestDB'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
+
 
 # Initialize MySQL
 mysql = MySQL(app)
@@ -22,7 +24,9 @@ def index():
     users = cur.fetchall()
     cur.close()
 
-    return render_template('index.html', users=users)
+    takenCourses = ratings()
+
+    return render_template('index.html', users=users, takenCourses=takenCourses)
 
 
 @app.route('/add', methods=['POST'])
@@ -40,6 +44,42 @@ def add_user():
     cur.close()
 
     return 'User added successfully'
+
+@app.route('/', methods=['GET'])
+def ratings():
+    user_id = "1"
+    cur = mysql.connection.cursor()
+
+    cur.execute("""
+        SELECT UserTakenCourses.course_code, Ratings.rating
+        FROM Users
+        INNER JOIN UserTakenCourses ON Users.uid = UserTakenCourses.uid
+        LEFT JOIN Ratings ON UserTakenCourses.course_code = Ratings.course_code and Users.uid = Ratings.uid
+        WHERE Users.uid = %s
+    """, (user_id))
+
+    courses = [{'course_code': row['course_code'], 'rating': row['rating'] if row['rating'] is not None else ""} for row in cur.fetchall()]
+
+    cur.close()
+    return courses
+
+@app.route('/submit-ratings', methods=['POST'])
+def submit_ratings():
+    user_id = '1' 
+    cur = mysql.connection.cursor()
+
+    for course_code, rating in request.form.items():
+        cur.execute("""
+            INSERT INTO Ratings (uid, course_code, rating)
+            VALUES (%s, %s, %s)
+            ON DUPLICATE KEY UPDATE rating = %s
+        """, (course_code, rating, user_id, rating))
+
+    mysql.connection.commit()
+
+    cur.close()
+
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':

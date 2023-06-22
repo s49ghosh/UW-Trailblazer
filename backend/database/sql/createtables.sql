@@ -60,9 +60,10 @@ CREATE TABLE UserTakenCourses (
 
 
 CREATE TABLE Ratings (
+    uid INT NOT NULL,
     course_code VARCHAR(10) PRIMARY KEY NOT NULL,
     rating INT NOT NULL,
-    uid INT NOT NULL,
+    PRIMARY KEY (uid, course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
 );

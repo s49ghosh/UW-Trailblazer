@@ -1,4 +1,3 @@
--- Create a sample dataset to test the connection to database (A0)
 -- Insert sample data into Users table
 INSERT INTO Users (uid, first_name, last_name)
 VALUES
@@ -13,19 +12,21 @@ VALUES
     ('SUB2', 'Computer Science', 8, 4.5),
     ('SUB3', 'Physics', 3, 3.8);
 
--- Insert sample data into Terms table
-INSERT INTO Terms (term_id, start_date, end_date, term_season)
-VALUES
-    (1, '2023-01-01', '2023-04-30', 'Spring'),
-    (2, '2023-05-01', '2023-08-31', 'Summer'),
-    (3, '2023-09-01', '2023-12-31', 'Fall');
-
 -- Insert sample data into Courses table
 INSERT INTO Courses (course_code, course_name, subject_code, course_level, enroll_cap)
 VALUES
     ('COURSE1', 'Calculus I', 'SUB1', 100, 50),
     ('COURSE2', 'Introduction to Programming', 'SUB2', 200, 40),
     ('COURSE3', 'Classical Mechanics', 'SUB3', 300, 30);
+
+-- Insert sample data into Terms table
+INSERT INTO Terms (term_id, course_code, start_date, end_date, term_season)
+VALUES
+    (1, 'COURSE1' , '2023-01-01', '2023-04-30', 'Spring'),
+    (1, 'COURSE2' , '2023-01-01', '2023-04-30', 'Spring'),
+    (2, 'COURSE3' , '2023-05-01', '2023-08-31', 'Summer'),
+    (3, 'COURSE3' , '2023-09-01', '2023-12-31', 'Fall');
+
 
 -- Insert sample data into UserFriends table
 INSERT INTO UserFriends (uid, friend_id)
@@ -51,9 +52,9 @@ VALUES
     (3, 'COURSE3');
 
 -- Insert sample data into Ratings table
-INSERT INTO Ratings (uid, course_code, rating)
+INSERT INTO Ratings (course_code, rating, uid)
 VALUES
-    (1, 'COURSE1', 4),
-    (2, 'COURSE1', 3),
-    (2, 'COURSE2', 5),
-    (3, 'COURSE3', 3);
+    ('COURSE1', 4, 1),
+    ('COURSE1', 2, 2),
+    ('COURSE2', 5, 2),
+    ('COURSE3', 3, 3);

@@ -21,6 +21,7 @@
         <button type="submit">Add User</button>
     </form>
 
+
     <h1>Course Search</h1>
     <form method="POST" action="{{ url_for('search') }}">
         <input type="text" name="query" placeholder="Enter a course title">
@@ -66,6 +67,21 @@
         {% endfor %}
         </ul>
     {% endif %}
+
+    <h2>Ratings</h2>
+
+    <form action="/submit-ratings" method="post">
+        <table>
+            {% for course in takenCourses %}
+            <tr>
+                <td>{{ course.course_code }}</td>
+                <td><input type="text" name="{{ course.course_code }}" value="{{ course.rating }}" /></td>
+                <td>out of 5</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="Submit">
+    </form>
 
 </body>
 </html>

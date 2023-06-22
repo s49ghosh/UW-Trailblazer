@@ -49,7 +49,7 @@ Create a .env file using the example.env template (make a copy using the variabl
 Start flask development server
 ```bash
 $ export FLASK_ENV=development
-$ flask run
+$ python app.py
 ```
 
 You should get a response like this in the terminal:

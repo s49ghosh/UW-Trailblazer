@@ -30,7 +30,7 @@ CREATE TABLE Courses (
     subject_code VARCHAR(10),    
     course_level INT,
     enroll_cap INT,
-    rating INT,
+    rating DECIMAL(3,2),
     FOREIGN KEY (subject_code) REFERENCES Subjects(subject_code)
 );
 

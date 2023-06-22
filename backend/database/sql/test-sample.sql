@@ -1,9 +1,10 @@
+-- Create a sample dataset to test the connection to database (A0)
 -- Insert sample data into Users table
-INSERT INTO Users (uid, first_name, last_name, start_year)
+INSERT INTO Users (uid, first_name, last_name)
 VALUES
-    (1, 'John', 'Doe', 2019),
-    (2, 'Jane', 'Smith', 2020),
-    (3, 'Michael', 'Johnson', 2018);
+    (1, 'John', 'Doe'),
+    (2, 'Jane', 'Smith'),
+    (3, 'Michael', 'Johnson');
 
 -- Insert sample data into Subjects table
 INSERT INTO Subjects (subject_code, subject_name, num_courses, avg_rating)
@@ -26,6 +27,7 @@ VALUES
     ('COURSE2', 'Introduction to Programming', 'SUB2', 200, 40),
     ('COURSE3', 'Classical Mechanics', 'SUB3', 300, 30);
 
+select * from Courses;
 -- Insert sample data into UserFriends table
 INSERT INTO UserFriends (uid, friend_id)
 VALUES
@@ -45,12 +47,14 @@ VALUES
 INSERT INTO UserTakenCourses (uid, course_code)
 VALUES
     (1, 'COURSE1'),
+    (2, 'COURSE1'),
     (2, 'COURSE2'),
     (3, 'COURSE3');
 
 -- Insert sample data into Ratings table
-INSERT INTO Ratings (course_code, rating, uid)
+INSERT INTO Ratings (uid, course_code, rating)
 VALUES
-    ('COURSE1', 4, 1),
-    ('COURSE2', 5, 2),
-    ('COURSE3', 3, 3);
+    (1, 'COURSE1', 4),
+    (2, 'COURSE1', 3),
+    (2, 'COURSE2', 5),
+    (3, 'COURSE3', 3);

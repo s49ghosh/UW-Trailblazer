@@ -58,7 +58,7 @@ def search():
     print(subject)
     if query:
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM Courses WHERE course_name LIKE %s", ('%' + query + '%',))
+        cur.execute("SELECT * FROM Courses WHERE course_code LIKE %s", ('%' + query + '%',))
         courses = cur.fetchall()
         cur.execute("SELECT * FROM Subjects")
         subjectdropdown = cur.fetchall()

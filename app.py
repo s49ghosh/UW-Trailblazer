@@ -113,7 +113,7 @@ def submit_ratings():
             INSERT INTO Ratings (uid, course_code, rating)
             VALUES (%s, %s, %s)
             ON DUPLICATE KEY UPDATE rating = %s
-        """, (uid, course_code, rating, rating))
+        """, (user_id, course_code, rating, rating))
 
     mysql.connection.commit()
 

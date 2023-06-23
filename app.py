@@ -140,6 +140,30 @@ def submit_ratings():
 
     return redirect(url_for('index'))
 
+@app.route('/friend-courses', methods=['GET'])
+def get_friend_courses():
+    cur = mysql.connection.cursor()
+
+    # Substitute 1 and 2 with the user ids you're interested in
+    cur.execute("""
+        SELECT DISTINCT uf.friend_id, c.course_code, c.course_name, s.subject_name, s.avg_rating
+        FROM userfriends uf
+        JOIN users u ON uf.friend_id = u.uid
+        JOIN usertakencourses ut ON u.uid = ut.uid
+        JOIN courses c ON ut.course_code = c.course_code
+        JOIN subjects s ON c.subject_code = s.subject_code
+        WHERE uf.uid = 1
+        AND c.course_code IN (
+            SELECT course_code
+            FROM courses 
+            WHERE u.uid = 2
+        )
+    """)
+    courses = cur.fetchall()
+    cur.close()
+    return render_template('friend_courses.html', courses=courses)
+
+
 
 if __name__ == '__main__':
     app.run()

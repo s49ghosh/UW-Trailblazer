@@ -57,6 +57,7 @@ VALUES
 INSERT INTO Ratings (course_code, rating, uid)
 VALUES
     ('COURSE1', 4, 1),
+    ('COURSE1', 2, 2),
     ('COURSE2', 5, 2),
     ('COURSE3', 3, 3);
 

@@ -80,10 +80,11 @@ VALUES
 -- Insert sample data into Terms table
 INSERT INTO Terms (term_id, course_code, start_date, end_date, term_season)
 VALUES
-    (1, 'COURSE1' , '2023-01-01', '2023-04-30', 'Spring'),
-    (1, 'COURSE2' , '2023-01-01', '2023-04-30', 'Spring'),
-    (2, 'COURSE3' , '2023-05-01', '2023-08-31', 'Summer'),
+    (1, 'COURSE1' , '2023-01-01', '2023-04-30', 'Winter'),
+    (1, 'COURSE2' , '2023-01-01', '2023-04-30', 'Winter'),
+    (2, 'COURSE3' , '2023-05-01', '2023-08-31', 'Spring'),
     (3, 'COURSE3' , '2023-09-01', '2023-12-31', 'Fall');
+
 
 
 -- Insert sample data into UserFriends table
@@ -130,7 +131,6 @@ VALUES
     ('COURSE2', 'COURSE1'),
     ('COURSE3', 'COURSE2');
 
-
 INSERT INTO UserTakenCourses (uid, course_code) VALUES (2, "COURSE3");
 SELECT prereq FROM Requirements WHERE course_code = "COURSE3";
 SELECT course_code FROM UserTakenCourses WHERE uid = 1;
@@ -154,3 +154,12 @@ AND c.course_code NOT IN (
     FROM courses 
     WHERE u.uid = 1
 )
+
+-- Insert sample data into CourseAvailability table
+INSERT INTO CourseAvailability (term_id, course_code)
+VALUES
+    (2, 'COURSE1'),
+    (1, 'COURSE2'),
+    (2, 'COURSE3'),
+    (1, 'COURSE1');
+

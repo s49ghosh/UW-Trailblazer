@@ -20,6 +20,8 @@ pip install -r requirements.txt
 ## How to setup the database
 You should install MySQL based on your system (https://dev.mysql.com/doc/refman/8.0/en/installing.html)
 
+Download MySQL Workbench to help with database management. https://dev.mysql.com/downloads/workbench/
+
 run
 ```
 $ sudo mysql -u root
@@ -42,6 +44,9 @@ MYSQL_PASSWORD=mypassword
 MYSQL_DATABASE=testDB
 ```
 
+## Importing Data
+Copy and Paste the provided createtables.sql and test-sample.sql files into MySQL Workbench and run them to populate testDB with the sample data.
+
 ## Usage
 
 Create a .env file using the example.env template (make a copy using the variables inside of the template)
@@ -61,3 +66,5 @@ You should get a response like this in the terminal:
 ```
 
 You'll now be able to access the website at `localhost:5000` or `127.0.0.1:5000` in the browser! 
+
+

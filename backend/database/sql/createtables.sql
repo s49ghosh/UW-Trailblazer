@@ -28,13 +28,20 @@ CREATE TABLE Courses (
 );
 
 CREATE TABLE Terms (
-    term_id INT,
-    course_code VARCHAR(10) , 
+    term_id INT PRIMARY KEY NOT NULL,
     start_date DATE,
     end_date DATE,
     term_season VARCHAR(10),
-    PRIMARY KEY (term_id, course_code),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
+);
+
+CREATE TABLE CourseAvailability (
+    term_id INT,
+    course_code VARCHAR(10),
+    PRIMARY KEY (term_id, course_code),
+    FOREIGN KEY (term_id) REFERENCES Terms(term_id),
+    FOREIGN KEY (course_code) REFERENCES Courses(course_code)
+
 );
 
 CREATE TABLE UserFriends (

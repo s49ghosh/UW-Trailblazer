@@ -32,6 +32,7 @@ $ mysql -u myportfolio -p
 ```
 $ CREATE DATABASE testDB;
 ```
+For now - manually change the fields in the app.py file, we are not using .env files at the moment.
 ```
 .env file
 URL=localhost:5000
@@ -48,7 +49,7 @@ Create a .env file using the example.env template (make a copy using the variabl
 Start flask development server
 ```bash
 $ export FLASK_ENV=development
-$ flask run
+$ python app.py
 ```
 
 You should get a response like this in the terminal:

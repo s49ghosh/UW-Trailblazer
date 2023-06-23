@@ -17,13 +17,6 @@ CREATE TABLE Subjects (
     
 );
 
-CREATE TABLE Terms (
-    term_id INT PRIMARY KEY NOT NULL,
-    start_date DATE,
-    end_date DATE,
-    term_season VARCHAR(10)
-);
-
 
 CREATE TABLE Courses (
     course_code VARCHAR(10) PRIMARY KEY NOT NULL,
@@ -31,7 +24,18 @@ CREATE TABLE Courses (
     subject_code VARCHAR(10),    
     course_level INT,
     enroll_cap INT,
+    rating DECIMAL(3,2),
     FOREIGN KEY (subject_code) REFERENCES Subjects(subject_code)
+);
+
+CREATE TABLE Terms (
+    term_id INT,
+    course_code VARCHAR(10) , 
+    start_date DATE,
+    end_date DATE,
+    term_season VARCHAR(10),
+    PRIMARY KEY (term_id, course_code),
+    FOREIGN KEY (course_code) REFERENCES Courses(course_code)
 );
 
 CREATE TABLE UserFriends (

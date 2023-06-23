@@ -79,7 +79,7 @@ def add_course():
         if value == 'Planned':
             cur = mysql.connection.cursor()
             try:
-                cur.execute(f'SELECT prereq FROM requirements WHERE course_code = "{course_code}"')
+                cur.execute(f'SELECT prereq FROM Requirements WHERE course_code = "{course_code}"')
                 requirements = [row['prereq'] for row in cur.fetchall()]
                 cur.execute(f'SELECT course_code FROM UserTakenCourses WHERE uid = "{userid}"')
                 taken = [row['course_code'] for row in cur.fetchall()]

@@ -13,7 +13,7 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 # Initialize MySQL
 mysql = MySQL(app)
-    
+
 
 @app.route('/')
 def index():

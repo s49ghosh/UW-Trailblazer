@@ -49,6 +49,8 @@ VALUES
     (1, 'COURSE1'),
     (2, 'COURSE1'),
     (2, 'COURSE2'),
+    (3, 'COURSE1'),
+    (3, 'COURSE2'),
     (3, 'COURSE3');
 
 -- Insert sample data into Ratings table
@@ -58,3 +60,9 @@ VALUES
     ('COURSE1', 2, 2),
     ('COURSE2', 5, 2),
     ('COURSE3', 3, 3);
+
+-- Insert sample data into Requirements table
+INSERT INTO Requirements (course_code, prereq)
+VALUES
+    ('COURSE2', 'COURSE1'),
+    ('COURSE3', 'COURSE2');

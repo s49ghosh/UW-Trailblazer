@@ -1,5 +1,24 @@
-# CS348-PROJECT
- University of Waterloo CS348 Project
+# Course Connect
+CS 348: Introduction to Database Systems Spring 2023 Group Project
+
+Members: Helen Xia, Jasmine Xu, Sohom Ghosh, Kevin Zhang
+
+### Current Features that the application supports
+1. The user can input previous courses through search and click then see their prerequisite
+and term availabilities. Ultimately, we want this to be a drag-and-drop feature for a better
+user experience.
+
+2. After the user has inputted previous courses, we ask them to rate them. The average
+course rating is calculated and stored for each course and displayed when shown to
+users.
+
+3. Users can filter their courses based on rating, term availability, and subject. This display
+of the searched courses will provide various information, such as friends taking the
+course, course term availability, subject, course code, etc.
+
+4. The implementation of seeing what a user’s friends are taking. This feature makes users
+more inclined to take a course if their friends are taking it, creating a social aspect of the
+application.
 
 ## Installation
 

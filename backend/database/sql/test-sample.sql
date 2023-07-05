@@ -1,3 +1,61 @@
+DELIMITER //
+
+CREATE TRIGGER update_ratings
+AFTER UPDATE ON Ratings
+FOR EACH ROW
+BEGIN
+    DECLARE subjectCode VARCHAR(255);
+
+    SELECT subject_code INTO subjectCode FROM Courses WHERE course_code = NEW.course_code;
+
+    UPDATE Courses 
+    SET rating = (SELECT AVG(rating) 
+                  FROM Ratings 
+                  WHERE course_code = NEW.course_code) 
+    WHERE course_code = NEW.course_code;
+
+    UPDATE Subjects
+    SET avg_rating = (SELECT AVG(eachrating)
+                      FROM (SELECT AVG(rating) as eachrating
+                            FROM Ratings
+                            WHERE course_code IN (SELECT course_code 
+                                                  FROM Courses 
+                                                  WHERE subject_code = subjectCode)
+                            GROUP BY course_code) as subquery)
+    WHERE subject_code = subjectCode;
+END; //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER insert_ratings
+AFTER INSERT ON Ratings
+FOR EACH ROW
+BEGIN
+    DECLARE subjectCode VARCHAR(255);
+
+    SELECT subject_code INTO subjectCode FROM Courses WHERE course_code = NEW.course_code;
+
+    UPDATE Courses 
+    SET rating = (SELECT AVG(rating) 
+                  FROM Ratings 
+                  WHERE course_code = NEW.course_code) 
+    WHERE course_code = NEW.course_code;
+
+    UPDATE Subjects
+    SET avg_rating = (SELECT AVG(eachrating)
+                      FROM (SELECT AVG(rating) as eachrating
+                            FROM Ratings
+                            WHERE course_code IN (SELECT course_code 
+                                                  FROM Courses 
+                                                  WHERE subject_code = subjectCode)
+                            GROUP BY course_code) as subquery)
+    WHERE subject_code = subjectCode;
+END; //
+
+DELIMITER ;
+
 -- Insert sample data into Users table
 INSERT INTO Users (uid, first_name, last_name)
 VALUES
@@ -37,13 +95,6 @@ VALUES
     (2, 1),
     (3, 1);
 
--- Insert sample data into UserPlannedCourses table
-INSERT INTO UserPlannedCourses (uid, course_code)
-VALUES
-    (1, 'COURSE2'),
-    (2, 'COURSE3'),
-    (3, 'COURSE1');
-
 -- Insert sample data into UserTakenCourses table
 INSERT INTO UserTakenCourses (uid, course_code)
 VALUES
@@ -54,19 +105,55 @@ VALUES
     (3, 'COURSE2'),
     (3, 'COURSE3');
 
+SELECT * FROM Courses;
+SELECT * FROM Subjects;
+
 -- Insert sample data into Ratings table
 INSERT INTO Ratings (course_code, rating, uid)
 VALUES
     ('COURSE1', 4, 1),
-    ('COURSE1', 2, 2),
+    ('COURSE1', 2, 2);
+
+SELECT * FROM Courses;
+SELECT * FROM Subjects;
+
+INSERT INTO Ratings (course_code, rating, uid)
+VALUES
     ('COURSE2', 5, 2),
     ('COURSE3', 3, 3);
+
+SELECT * FROM Courses;
+SELECT * FROM Subjects;
 
 -- Insert sample data into Requirements table
 INSERT INTO Requirements (course_code, prereq)
 VALUES
     ('COURSE2', 'COURSE1'),
     ('COURSE3', 'COURSE2');
+
+INSERT INTO UserTakenCourses (uid, course_code) VALUES (2, "COURSE3");
+SELECT prereq FROM Requirements WHERE course_code = "COURSE3";
+SELECT course_code FROM UserTakenCourses WHERE uid = 1;
+INSERT INTO UserPlannedCourses (uid, course_code) VALUES (1, "COURSE2");
+
+
+SELECT * FROM Courses 
+JOIN Subjects ON Courses.subject_code = Subjects.subject_code
+WHERE course_code LIKE "course1"
+AND Subjects.subject_code LIKE "sub1";
+
+SELECT DISTINCT uf.friend_id, c.course_code, c.course_name, s.subject_name, s.avg_rating
+FROM userfriends uf
+JOIN users u ON uf.friend_id = u.uid
+JOIN usertakencourses ut ON u.uid = ut.uid
+JOIN courses c ON ut.course_code = c.course_code
+JOIN subjects s ON c.subject_code = s.subject_code
+WHERE uf.uid = 1
+AND c.course_code NOT IN (
+    SELECT course_code
+    FROM courses 
+    WHERE u.uid = 1
+)
 
 -- Insert sample data into CourseAvailability table
 INSERT INTO CourseAvailability (term_id, course_code)
@@ -75,3 +162,4 @@ VALUES
     (1, 'COURSE2'),
     (2, 'COURSE3'),
     (1, 'COURSE1');
+

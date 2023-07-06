@@ -67,7 +67,7 @@ def Course_table(terms):
             continue
         for course in data:
             #print(course)
-            course_code = course['subjectCode'] + course['catalogNumber']
+            course_code = course['subjectCode'] + ' ' + course['catalogNumber']
             course_name = course['title'].replace("'", "''")
             subject_code = course['subjectCode']
             level = course['catalogNumber'][0]

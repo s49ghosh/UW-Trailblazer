@@ -79,9 +79,7 @@ CREATE TABLE Ratings (
 );
 
 CREATE TABLE Requirements (
-    course_code VARCHAR(10) NOT NULL,
-    prereq VARCHAR(10) NOT NULL,
-    PRIMARY KEY (course_code, prereq),
-    FOREIGN KEY (course_code) REFERENCES Courses(course_code),
-    FOREIGN KEY (prereq) REFERENCES Courses(course_code)
+    course_code VARCHAR(10) NOT NULL PRIMARY KEY,
+    prereq JSON,
+    FOREIGN KEY (course_code) REFERENCES Courses(course_code)
 );

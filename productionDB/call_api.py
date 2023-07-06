@@ -186,14 +186,13 @@ def Course_table(terms):
 
             # requirements
             requirement = course['requirementsDescription']
-            if requirement is not None:
-                #print(requirement)
-                prereq = separate_reqs(requirement)
-                #print(prereq)
-                json_string = json.dumps(prereq)
-                insert_requirement = f"INSERT INTO Requirements(course_code, prereq) VALUES ('{course_code}', '{json_string}') ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
-                cursor.execute(insert_requirement)
-                mysql.connection.commit()
+            #print(requirement)
+            prereq = separate_reqs(requirement)
+            #print(prereq)
+            json_string = json.dumps(prereq)
+            insert_requirement = f"INSERT INTO Requirements(course_code, prereq) VALUES ('{course_code}', '{json_string}') ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
+            cursor.execute(insert_requirement)
+            mysql.connection.commit()
 
     cursor.close()
     

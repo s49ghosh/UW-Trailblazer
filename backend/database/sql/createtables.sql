@@ -18,7 +18,7 @@ CREATE TABLE Subjects (
 
 
 CREATE TABLE Courses (
-    course_code VARCHAR(10) PRIMARY KEY NOT NULL,
+    course_code VARCHAR(20) PRIMARY KEY NOT NULL,
     course_name VARCHAR(100),
     subject_code VARCHAR(10),    
     course_level INT,

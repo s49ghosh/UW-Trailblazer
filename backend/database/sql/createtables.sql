@@ -42,14 +42,6 @@ CREATE TABLE EnrollCapacity(
     FOREIGN KEY (term_id) REFERENCES Terms(term_id)
 )
 
-CREATE TABLE CourseAvailability (
-    term_id INT,
-    course_code VARCHAR(10),
-    PRIMARY KEY (term_id, course_code),
-    FOREIGN KEY (term_id) REFERENCES Terms(term_id),
-    FOREIGN KEY (course_code) REFERENCES Courses(course_code)
-
-);
 
 CREATE TABLE UserFriends (
     uid INT NOT NULL,

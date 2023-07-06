@@ -22,7 +22,6 @@ CREATE TABLE Courses (
     course_name VARCHAR(100),
     subject_code VARCHAR(10),    
     course_level INT,
-    enroll_cap INT,
     rating DECIMAL(3,2),
     FOREIGN KEY (subject_code) REFERENCES Subjects(subject_code)
 );
@@ -31,9 +30,17 @@ CREATE TABLE Terms (
     term_id INT PRIMARY KEY NOT NULL,
     start_date DATE,
     end_date DATE,
-    term_season VARCHAR(10),
-    FOREIGN KEY (course_code) REFERENCES Courses(course_code)
+    term_season VARCHAR(10)
 );
+
+CREATE TABLE EnrollCapacity(
+    course_code VARCHAR(10),
+    term_id INT,
+    enroll_cap INT,
+    PRIMARY KEY (course_code, term_id),
+    FOREIGN KEY (course_code) REFERENCES Courses(course_code),
+    FOREIGN KEY (term_id) REFERENCES Terms(term_id)
+)
 
 CREATE TABLE CourseAvailability (
     term_id INT,

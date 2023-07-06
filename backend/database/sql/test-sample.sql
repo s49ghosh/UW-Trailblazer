@@ -71,11 +71,11 @@ VALUES
     ('SUB3', 'Physics', 3, 3.8);
 
 -- Insert sample data into Courses table
-INSERT INTO Courses (course_code, course_name, subject_code, course_level, enroll_cap)
+INSERT INTO Courses (course_code, course_name, subject_code, course_level)
 VALUES
-    ('COURSE1', 'Calculus I', 'SUB1', 100, 50),
-    ('COURSE2', 'Introduction to Programming', 'SUB2', 200, 40),
-    ('COURSE3', 'Classical Mechanics', 'SUB3', 300, 30);
+    ('COURSE1', 'Calculus I', 'SUB1', 100),
+    ('COURSE2', 'Introduction to Programming', 'SUB2', 200),
+    ('COURSE3', 'Classical Mechanics', 'SUB3', 300);
 
 -- Insert sample data into Terms table
 INSERT INTO Terms (term_id, course_code, start_date, end_date, term_season)
@@ -85,6 +85,13 @@ VALUES
     (2, 'COURSE3' , '2023-05-01', '2023-08-31', 'Spring'),
     (3, 'COURSE3' , '2023-09-01', '2023-12-31', 'Fall');
 
+
+-- Insert sample data into EnrollCapacity table
+INSERT INTO EnrollCapacity (course_code, term_id, enroll_cap)
+VALUES
+    (1, 'COURSE1', 50),
+    (1, 'COURSE2', 40),
+    (2, 'COURSE3', 30);
 
 
 -- Insert sample data into UserFriends table

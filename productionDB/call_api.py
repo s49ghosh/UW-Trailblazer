@@ -21,14 +21,13 @@ mysql = MySQL(app)
 
 # Set Open API key
 openapi_key = '1E5B68EB071D404F8D68C2571CDBA921'
-import re
 
-def separate_reqs(reqs_text):
-    if reqs_text is None or not reqs_text.startswith('Prereq'):
+def separate_reqs(requirements):
+    if requirements is None or not requirements.startswith('Prereq'):
         return []
-    reqs_text = reqs_text.split('.')[0]
-    reqs_text = reqs_text.split(';')[0]
-    prereqs = re.split(r', \s*(?![^()]*\))|(?<!\()\s* and \s*(?![^()]*\))', reqs_text)
+    requirements = requirements.split('.')[0]
+    requirements = requirements.split(';')[0]
+    prereqs = re.split(r', \s*(?![^()]*\))|(?<!\()\s* and \s*(?![^()]*\))', requirements)
     pattern = re.compile(r'[A-Z]+ \d+')
     
     res = []
@@ -50,7 +49,7 @@ def separate_reqs(reqs_text):
                 res[0].append(subject + ' ' + prereq)
         return res
 
-    prereqs_or = re.split(r' or ', reqs_text)
+    prereqs_or = re.split(r' or ', requirements)
     ret = True
     if len(prereqs_or) > 1:
         res.append([])
@@ -138,8 +137,8 @@ def Term_table():
             term_season = 'Spring'
 
         if term_season:
-            #insert_command = f"INSERT INTO Terms(term_id, start_date, end_date, term_season) VALUES ('{term_id}', '{start_date}', '{end_date}', '{term_season}')"
-            #cursor.execute(insert_command)
+            insert_command = f"INSERT INTO Terms(term_id, start_date, end_date, term_season) VALUES ('{term_id}', '{start_date}', '{end_date}', '{term_season}')"
+            cursor.execute(insert_command)
             mysql.connection.commit()
 
     cursor.close()

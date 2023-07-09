@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
 import logging
+import bcrypt
 
 app = Flask(__name__)
 
@@ -29,9 +30,65 @@ def index():
     termdropdown = cur.fetchall()
     cur.close()
 
-    takenCourses = ratings()
+    if 'username' in session:
+        takenCourses = ratings() 
+    else:
+        takenCourses = ''
     
     return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown)
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM LoginDetails WHERE uid = %s", (username,))
+        user = cur.fetchone()
+
+        if user:
+            error = 'UID already exists.'
+            return render_template('signup.html', error=error)
+
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        cur.execute("INSERT INTO LoginDetails (uid, password) VALUES (%s, %s)", (username, hashed_password))
+        mysql.connection.commit()
+        cur.close()
+
+        session['username'] = username
+        return redirect('/')
+
+    return render_template('signup.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM LoginDetails WHERE uid = %s", (username,))
+        user = cur.fetchone()
+        cur.close()
+
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+            session['username'] = username
+            return redirect('/')
+        else:
+            error = 'Invalid username or password.'
+            return render_template('login.html', error=error)
+
+    return render_template('login.html')   
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect('/')
 
 
 @app.route('/add', methods=['POST'])
@@ -106,7 +163,8 @@ def add_course():
 
 @app.route('/', methods=['GET'])
 def ratings():
-    user_id = "1"
+    #user_id = "1"
+    user_id = session['username']
     cur = mysql.connection.cursor()
 
     cur.execute("""
@@ -124,7 +182,8 @@ def ratings():
 
 @app.route('/submit-ratings', methods=['POST'])
 def submit_ratings():
-    user_id = '1' 
+    #user_id = '1' 
+    user_id = session['username']
     cur = mysql.connection.cursor()
 
     for course_code, rating in request.form.items():

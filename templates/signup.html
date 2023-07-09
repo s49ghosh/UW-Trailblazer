@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <style>
+        /* Add your custom CSS styles here */
+    </style>
+</head>
+<body>
+    <h1>Sign Up</h1>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+    <form action="/signup" method="POST">
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="/login">Login here</a></p>
+</body>
+</html>

@@ -11,14 +11,13 @@ CREATE TABLE Users (
 CREATE TABLE Subjects (
     subject_code VARCHAR(10) PRIMARY KEY NOT NULL,
     subject_name VARCHAR(100),
-    num_courses INT,
     avg_rating DECIMAL(3,2)
     
 );
 
 
 CREATE TABLE Courses (
-    course_code VARCHAR(20) PRIMARY KEY NOT NULL,
+    course_code VARCHAR(40) PRIMARY KEY NOT NULL,
     course_name VARCHAR(100),
     subject_code VARCHAR(10),    
     course_level INT,
@@ -40,7 +39,7 @@ CREATE TABLE EnrollCapacity(
     PRIMARY KEY (course_code, term_id),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code),
     FOREIGN KEY (term_id) REFERENCES Terms(term_id)
-)
+);
 
 
 CREATE TABLE UserFriends (

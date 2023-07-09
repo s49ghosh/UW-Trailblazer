@@ -86,3 +86,9 @@ CREATE TABLE Requirements (
     FOREIGN KEY (course_code) REFERENCES Courses(course_code),
     FOREIGN KEY (prereq) REFERENCES Courses(course_code)
 );
+
+CREATE TABLE LoginDetails (
+    uid VARCHAR(100) PRIMARY KEY NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    FOREIGN KEY (uid) REFERENCES Users(uid)
+);

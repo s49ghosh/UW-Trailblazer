@@ -78,12 +78,12 @@ VALUES
     ('COURSE3', 'Classical Mechanics', 'SUB3', 300);
 
 -- Insert sample data into Terms table
-INSERT INTO Terms (term_id, course_code, start_date, end_date, term_season)
+INSERT INTO Terms (term_id, start_date, end_date, term_season)
 VALUES
-    (1, 'COURSE1' , '2023-01-01', '2023-04-30', 'Winter'),
-    (1, 'COURSE2' , '2023-01-01', '2023-04-30', 'Winter'),
-    (2, 'COURSE3' , '2023-05-01', '2023-08-31', 'Spring'),
-    (3, 'COURSE3' , '2023-09-01', '2023-12-31', 'Fall');
+    (1 , '2023-01-01', '2023-04-30', 'Winter'),
+    (1 , '2023-01-01', '2023-04-30', 'Winter'),
+    (2 , '2023-05-01', '2023-08-31', 'Spring'),
+    (3 , '2023-09-01', '2023-12-31', 'Fall');
 
 
 -- Insert sample data into EnrollCapacity table

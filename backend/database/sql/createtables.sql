@@ -33,7 +33,7 @@ CREATE TABLE Terms (
 );
 
 CREATE TABLE EnrollCapacity(
-    course_code VARCHAR(10),
+    course_code VARCHAR(40),
     term_id INT,
     enroll_cap INT,
     PRIMARY KEY (course_code, term_id),

@@ -22,6 +22,7 @@ more inclined to take a course if their friends are taking it, creating a social
 application.
 
 Milestone 2
+
 5. Login and sign/up page for existing and new users. Sessions are saved and used to track
 which user is using the application. Checks for incorrect passwords and stores them encrypted
 in the database.
@@ -71,7 +72,17 @@ MYSQL_DATABASE=testDB
 ```
 
 ## Importing Data
-Copy and Paste the provided createtables.sql and test-sample.sql files into MySQL Workbench and run them to populate testDB with the sample data.
+Before importing the tables, run the createtables.sql in your workbench.
+Then we want to import the data from the waterloo API. We run the following command in the directory's root.
+```bash
+$ python productionDB/call_api.py
+```
+Then click the link to the web application, as the web application loads, it is importing the data.
+Wait until the web application displays "Tables created".
+
+This calls API calls from https://openapi.data.uwaterloo.ca/api-docs/index.html.
+
+BOOM! The data has been imported from the API.
 
 ## Usage
 

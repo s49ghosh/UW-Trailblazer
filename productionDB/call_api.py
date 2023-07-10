@@ -11,9 +11,9 @@ app = Flask(__name__)
 # Configure MySQL
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = ''
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = ''
+app.config['MYSQL_USER'] = 'CS348USER'
+app.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_DB'] = 'jasminefeature'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 # Initialize MySQL
@@ -137,7 +137,7 @@ def Term_table():
             term_season = 'Spring'
 
         if term_season:
-            insert_command = f"INSERT INTO Terms(term_id, start_date, end_date, term_season) VALUES ('{term_id}', '{start_date}', '{end_date}', '{term_season}')"
+            insert_command = f"INSERT IGNORE INTO Terms(term_id, start_date, end_date, term_season) VALUES ('{term_id}', '{start_date}', '{end_date}', '{term_season}')"
             cursor.execute(insert_command)
             mysql.connection.commit()
 
@@ -166,9 +166,12 @@ def Course_table(terms):
             course_level = int(course['catalogNumber'][0]) * 100
             course_id = course['courseId']
 
-            insert_course = f"INSERT INTO Courses(course_code, course_name, subject_code, course_level, rating) VALUES ('{course_code}', '{course_name}', '{subject_code}', {course_level}, 0) ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
-            cursor.execute(insert_course)
-            mysql.connection.commit()
+            insert_course = f"INSERT IGNORE INTO Courses(course_code, course_name, subject_code, course_level, rating) VALUES ('{course_code}', '{course_name}', '{subject_code}', {course_level}, 0) ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
+            try:
+                cursor.execute(insert_course)
+                mysql.connection.commit()
+            except:
+                print(f"trying to insert '{course_code, course_name, subject_code, level}")
 
             # Call the API endpoint: /v3/ClassSchedule/{termCode}/{courseId}
             url_schedule = f"https://openapi.data.uwaterloo.ca/v3/ClassSchedules/{term_id}/{course_id}"
@@ -179,7 +182,7 @@ def Course_table(terms):
             if data_schedule:
                 enroll_cap = data_schedule[0]['maxEnrollmentCapacity']
 
-                insert_enrollment = f"INSERT INTO EnrollCapacity(course_code, term_id, enroll_cap) VALUES ('{course_code}', '{term_id}', {enroll_cap}) ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
+                insert_enrollment = f"INSERT IGNORE INTO EnrollCapacity(course_code, term_id, enroll_cap) VALUES ('{course_code}', '{term_id}', {enroll_cap}) ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
                 cursor.execute(insert_enrollment)
                 mysql.connection.commit()
 
@@ -189,15 +192,35 @@ def Course_table(terms):
             prereq = separate_reqs(requirement)
             #print(prereq)
             json_string = json.dumps(prereq)
-            insert_requirement = f"INSERT INTO Requirements(course_code, prereq) VALUES ('{course_code}', '{json_string}') ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
+            insert_requirement = f"INSERT IGNORE INTO Requirements(course_code, prereq) VALUES ('{course_code}', '{json_string}') ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
             cursor.execute(insert_requirement)
             mysql.connection.commit()
 
     cursor.close()
-    
+
+def Subjects():
+    # Call API endpoint: /v3/Subjects
+    url = "https://openapi.data.uwaterloo.ca/v3/Subjects"
+    headers = {'x-api-key': openapi_key}
+    response = requests.get(url, headers=headers)
+    data = response.json()
+
+    cursor = mysql.connection.cursor()
+
+    for subject in data:
+        code = subject['code']
+        name = subject['name']
+        insert_command = "INSERT IGNORE INTO Subjects(subject_code, subject_name, avg_rating) VALUES (%s, %s, %s)"
+        values = (code, name, '0.0')
+        cursor.execute(insert_command, values)
+        mysql.connection.commit()
+
+    cursor.close()
+
 
 @app.route('/')
 def API_calls():
+    Subjects()
     terms = Term_table()
     Course_table(terms)
     return 'Tables created'

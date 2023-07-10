@@ -11,18 +11,16 @@ CREATE TABLE Users (
 CREATE TABLE Subjects (
     subject_code VARCHAR(10) PRIMARY KEY NOT NULL,
     subject_name VARCHAR(100),
-    num_courses INT,
     avg_rating DECIMAL(3,2)
     
 );
 
 
 CREATE TABLE Courses (
-    course_code VARCHAR(10) PRIMARY KEY NOT NULL,
+    course_code VARCHAR(40) PRIMARY KEY NOT NULL,
     course_name VARCHAR(100),
     subject_code VARCHAR(10),    
     course_level INT,
-    enroll_cap INT,
     rating DECIMAL(3,2),
     FOREIGN KEY (subject_code) REFERENCES Subjects(subject_code)
 );
@@ -31,18 +29,18 @@ CREATE TABLE Terms (
     term_id INT PRIMARY KEY NOT NULL,
     start_date DATE,
     end_date DATE,
-    term_season VARCHAR(10),
-    FOREIGN KEY (course_code) REFERENCES Courses(course_code)
+    term_season VARCHAR(10)
 );
 
-CREATE TABLE CourseAvailability (
+CREATE TABLE EnrollCapacity(
+    course_code VARCHAR(40),
     term_id INT,
-    course_code VARCHAR(10),
-    PRIMARY KEY (term_id, course_code),
-    FOREIGN KEY (term_id) REFERENCES Terms(term_id),
-    FOREIGN KEY (course_code) REFERENCES Courses(course_code)
-
+    enroll_cap INT,
+    PRIMARY KEY (course_code, term_id),
+    FOREIGN KEY (course_code) REFERENCES Courses(course_code),
+    FOREIGN KEY (term_id) REFERENCES Terms(term_id)
 );
+
 
 CREATE TABLE UserFriends (
     uid INT NOT NULL,
@@ -54,7 +52,7 @@ CREATE TABLE UserFriends (
 
 CREATE TABLE UserPlannedCourses (
     uid INT,
-    course_code VARCHAR(10),
+    course_code VARCHAR(40),
     PRIMARY KEY (uid, course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
@@ -63,7 +61,7 @@ CREATE TABLE UserPlannedCourses (
 
 CREATE TABLE UserTakenCourses (
     uid INT,
-    course_code VARCHAR(10),
+    course_code VARCHAR(40),
     PRIMARY KEY (uid, course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
@@ -72,7 +70,7 @@ CREATE TABLE UserTakenCourses (
 
 CREATE TABLE Ratings (
     uid INT NOT NULL,
-    course_code VARCHAR(10) NOT NULL,
+    course_code VARCHAR(40) NOT NULL,
     rating INT NOT NULL,
     PRIMARY KEY (uid, course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid),
@@ -80,9 +78,7 @@ CREATE TABLE Ratings (
 );
 
 CREATE TABLE Requirements (
-    course_code VARCHAR(10) NOT NULL,
-    prereq VARCHAR(10) NOT NULL,
-    PRIMARY KEY (course_code, prereq),
-    FOREIGN KEY (course_code) REFERENCES Courses(course_code),
-    FOREIGN KEY (prereq) REFERENCES Courses(course_code)
+    course_code VARCHAR(40) NOT NULL PRIMARY KEY,
+    prereq JSON,
+    FOREIGN KEY (course_code) REFERENCES Courses(course_code)
 );

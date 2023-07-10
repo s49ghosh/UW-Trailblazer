@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flask MySQL App</title>
+    <title>Course Connect</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 </head>
 <body>
-    <h1>Users</h1>
+    <p><a href="/signup">Sign Up</a> | <a href="/login">Login</a></p>
+    {%if session['username'] %}
+    <p> Welcome {{ session['lname']}}, {{ session['fname'] }}! You are currently signed in.</p>
+    <p><a href="/logout">Logout</a></p>
+    {% else %}
+    <p> You are currently not signed in.</p>
+    {% endif %}
+    <h2>Users</h2>
     <ul>
         {% for user in users %}
         <li>{{ user.uid }} {{ user.first_name }} {{ user.last_name }} {{ user.start_year }} </li>
@@ -22,7 +29,7 @@
     </form>
 
 
-    <h1>Course Search</h1>
+    <h2>Course Search</h2>
     <form method="POST" action="{{ url_for('search') }}">
         <input type="text" name="query" placeholder="Enter a course title">
         <select name="subjectfilter">
@@ -41,7 +48,7 @@
     {% if message %}
         <p>{{ message }}</p>
     {% elif courses %}
-        <h2>Search Results for "{{ query }}"</h2>
+        <h>Search Results for "{{ query }}"</h2>
         <ul>
         {% for course in courses %}
             <li>
@@ -69,7 +76,7 @@
     {% endif %}
 
     <h2>Ratings</h2>
-
+    {% if session['username'] %}
     <form action="/submit-ratings" method="post">
         <table>
             {% for course in takenCourses %}
@@ -82,6 +89,9 @@
         </table>
         <input type="submit" value="Submit">
     </form>
+    {%else%}
+    <p>Please sign in to be able to rate your current courses</p>
+    {% endif %}
 
 </body>
 </html>

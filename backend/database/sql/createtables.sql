@@ -82,3 +82,9 @@ CREATE TABLE Requirements (
     prereq JSON,
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
 );
+
+CREATE TABLE LoginDetails (
+    uid INT PRIMARY KEY NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    FOREIGN KEY (uid) REFERENCES Users(uid)
+);

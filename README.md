@@ -7,25 +7,27 @@ Members: Helen Xia, Jasmine Xu, Sohom Ghosh, Kevin Zhang
 Milestone 1
 1. The user can input previous courses through search and click then see their prerequisite
 and term availabilities. Ultimately, we want this to be a drag-and-drop feature for a better
-user experience.
+user experience. (Implemented in app.py and index.html, shown on the homepage on the web application)
 
 2. After the user has inputted previous courses, we ask them to rate them. The average
 course rating is calculated and stored for each course and displayed when shown to
-users.
+users. (Implemented in app.py, index.html and ratings_triggers.sql, shown on the homepage on the web application)
+
 
 3. Users can filter their courses based on rating, term availability, and subject. This display
 of the searched courses will provide various information, such as friends taking the
 course, course term availability, subject, course code, etc.
+(Implemented in app.py, index.html and search.html, shown on the homepage on the web application)
 
-4. The implementation of seeing what a user’s friends are taking. This feature makes users
+5. The implementation of seeing what a user’s friends are taking. This feature makes users
 more inclined to take a course if their friends are taking it, creating a social aspect of the
-application.
+application. (Implemented in app.py and index.html, shown on the homepage on the web application)
 
 Milestone 2
 
 5. Login and sign/up page for existing and new users. Sessions are saved and used to track
 which user is using the application. Checks for incorrect passwords and stores them encrypted
-in the database.
+in the database. (Implemented in app.py, index.html, signup.html and login.html, shown on the homepage on the web application)
 
 6. Displays the highest-rated courses in the web application. 
 

@@ -88,7 +88,7 @@ CREATE TABLE Requirements (
 );
 
 CREATE TABLE LoginDetails (
-    uid VARCHAR(100) PRIMARY KEY NOT NULL,
+    uid INT PRIMARY KEY NOT NULL,
     password VARCHAR(100) NOT NULL,
     FOREIGN KEY (uid) REFERENCES Users(uid)
 );

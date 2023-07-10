@@ -52,7 +52,7 @@ CREATE TABLE UserFriends (
 
 CREATE TABLE UserPlannedCourses (
     uid INT,
-    course_code VARCHAR(10),
+    course_code VARCHAR(40),
     PRIMARY KEY (uid, course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
@@ -61,7 +61,7 @@ CREATE TABLE UserPlannedCourses (
 
 CREATE TABLE UserTakenCourses (
     uid INT,
-    course_code VARCHAR(10),
+    course_code VARCHAR(40),
     PRIMARY KEY (uid, course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid),
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
@@ -70,7 +70,7 @@ CREATE TABLE UserTakenCourses (
 
 CREATE TABLE Ratings (
     uid INT NOT NULL,
-    course_code VARCHAR(10) NOT NULL,
+    course_code VARCHAR(40) NOT NULL,
     rating INT NOT NULL,
     PRIMARY KEY (uid, course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid),
@@ -78,7 +78,7 @@ CREATE TABLE Ratings (
 );
 
 CREATE TABLE Requirements (
-    course_code VARCHAR(10) NOT NULL PRIMARY KEY,
+    course_code VARCHAR(40) NOT NULL PRIMARY KEY,
     prereq JSON,
     FOREIGN KEY (course_code) REFERENCES Courses(course_code)
 );

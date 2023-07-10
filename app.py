@@ -126,26 +126,45 @@ def add_user():
 def search():
     query = request.form.get('query')
     subject = request.form.get('subjectfilter')
-    #print(query)
-    print(subject)
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM Subjects")
+    subjectdropdown = cur.fetchall()
+    courses ={}
+
     if query:
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM Courses WHERE course_code LIKE %s", ('%' + query + '%',))
-        courses = cur.fetchall()
-        cur.execute("SELECT * FROM Subjects")
-        subjectdropdown = cur.fetchall()
-        cur.execute("SELECT * FROM Terms")
-        termdropdown = cur.fetchall()
+        if subject == 'All': # There is a query and no subject filter
+            cur.execute("SELECT * FROM Courses WHERE course_code LIKE %s", ('%' + query + '%',))
+            courses = cur.fetchall()
+
+        else: # There is a query and subject filter
+            cur.execute("SELECT * FROM Courses WHERE course_code LIKE %s AND subject_code LIKE %s", ('%' + query + '%', '%' + subject + '%',))
+            courses = cur.fetchall()
         cur.close()
-        return render_template('search.html', courses=courses, query=query, subjectDropdown = subjectdropdown, termDropdown = termdropdown)
+        return render_template('search.html', courses=courses, subject=subject, query=query, subjectDropdown = subjectdropdown)
     else:
-        return render_template('search.html', message='Please enter a search query.')
+
+        if subject != 'All': # There is no query and a subject filer
+            cur.execute("SELECT * FROM Courses WHERE subject_code LIKE %s", ('%' + subject + '%',))
+            courses = cur.fetchall()
+            cur.close()
+
+        elif subject == 'All': # There is no query and no subject filter
+            return render_template('search.html', message = 'Please specifiy search more.' , subject = subject, query=query, subjectDropdown = subjectdropdown)
+        return render_template('search.html', courses=courses, subject=subject, query=query, subjectDropdown = subjectdropdown)
 
 
 @app.route('/add_course', methods=['POST'])
 def add_course():
     course_code = request.form.get('course_code')
-    userid = request.form.get('uid')
+    
+    #userid = request.form.get('uid')
+    userid = 0
+    if 'username' in session:
+        userid = session['username']
+    else:
+        html_code = '<!DOCTYPE html><html><head><title>Sign In</title></head><body><h3>Please sign in to add courses</h3><button onclick="location.href=\'/login\'">Sign In</button></body></html>'
+        return html_code
     value = request.form.get('action')
     if course_code:
         if value == 'Planned':

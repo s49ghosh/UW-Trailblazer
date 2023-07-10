@@ -74,13 +74,17 @@ MYSQL_PASSWORD=mypassword
 MYSQL_DATABASE=testDB
 ```
 
-## Importing Data
-Before importing the tables, run the createtables.sql in your workbench.
-Then we want to import the data from the waterloo API. We run the following command in the directory's root.
+## Importing Production Dataset
+Before importing the tables, run the ```createtables.sql``` in your mySQL workbench.
+
+Then we want to import the data from the Waterloo API. We run the following command in the directory's root.
+
 ```bash
 $ python productionDB/call_api.py
 ```
+
 Then click the link to the web application, as the web application loads, it is importing the data.
+
 Wait until the web application displays "Tables created".
 
 This calls API calls from https://openapi.data.uwaterloo.ca/api-docs/index.html.

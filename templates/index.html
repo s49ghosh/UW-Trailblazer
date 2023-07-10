@@ -7,7 +7,7 @@
 <body>
     <p><a href="/signup">Sign Up</a> | <a href="/login">Login</a></p>
     {%if session['username'] %}
-    <p> Welcome {{ session['username'] }}! You are currently signed in.</p>
+    <p> Welcome {{ session['lname']}}, {{ session['fname'] }}! You are currently signed in.</p>
     <p><a href="/logout">Logout</a></p>
     {% else %}
     <p> You are currently not signed in.</p>

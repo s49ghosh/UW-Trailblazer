@@ -1,3 +1,4 @@
+from fnmatch import fnmatchcase
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_mysqldb import MySQL
 import logging
@@ -10,7 +11,7 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'CS348USER'
 app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'betterDB'
+app.config['MYSQL_DB'] = 'jasminefeature'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
@@ -42,6 +43,8 @@ def index():
 def signup():
     if request.method == 'POST':
         username = request.form['username']
+        first_name = request.form['fname']
+        last_name = request.form['lname']
         password = request.form['password']
 
         cur = mysql.connection.cursor()
@@ -54,11 +57,16 @@ def signup():
 
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
+        cur.execute("INSERT INTO Users (uid, first_name, last_name) VALUES (%s, %s, %s)", (username, first_name, last_name))
+        mysql.connection.commit()
+
         cur.execute("INSERT INTO LoginDetails (uid, password) VALUES (%s, %s)", (username, hashed_password))
         mysql.connection.commit()
         cur.close()
 
         session['username'] = username
+        session['fname'] = first_name
+        session['lname'] = last_name
         return redirect('/')
 
     return render_template('signup.html')
@@ -77,6 +85,13 @@ def login():
 
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             session['username'] = username
+            #print(user)
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM Users WHERE uid = %s", (username,))
+            userDetails = cur.fetchone()
+            cur.close()
+            session['fname'] = userDetails['first_name']
+            session['lname'] = userDetails['last_name']
             return redirect('/')
         else:
             error = 'Invalid username or password.'

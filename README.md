@@ -4,6 +4,7 @@ CS 348: Introduction to Database Systems Spring 2023 Group Project
 Members: Helen Xia, Jasmine Xu, Sohom Ghosh, Kevin Zhang
 
 ### Current Features that the application supports
+Milestone 1
 1. The user can input previous courses through search and click then see their prerequisite
 and term availabilities. Ultimately, we want this to be a drag-and-drop feature for a better
 user experience.
@@ -19,6 +20,12 @@ course, course term availability, subject, course code, etc.
 4. The implementation of seeing what a user’s friends are taking. This feature makes users
 more inclined to take a course if their friends are taking it, creating a social aspect of the
 application.
+
+Milestone 2
+5. Login and sign/up page for existing and new users. Sessions are saved and used to track
+which user is using the application. Checks for incorrect passwords and stores them encrypted
+in the database.
+6. Displays the highest-rated courses in the web application. 
 
 ## Installation
 

@@ -26,6 +26,7 @@ Milestone 2
 5. Login and sign/up page for existing and new users. Sessions are saved and used to track
 which user is using the application. Checks for incorrect passwords and stores them encrypted
 in the database.
+
 6. Displays the highest-rated courses in the web application. 
 
 ## Installation

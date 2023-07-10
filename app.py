@@ -17,7 +17,8 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 # Initialize MySQL
 mysql = MySQL(app)
-    
+
+
 
 @app.route('/')
 def index():
@@ -31,10 +32,9 @@ def index():
     termdropdown = cur.fetchall()
     cur.close()
 
+    takenCourses = ''
     if 'username' in session:
         takenCourses = ratings() 
-    else:
-        takenCourses = ''
     
     return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown)
 
@@ -85,7 +85,6 @@ def login():
 
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             session['username'] = username
-            #print(user)
             cur = mysql.connection.cursor()
             cur.execute("SELECT * FROM Users WHERE uid = %s", (username,))
             userDetails = cur.fetchone()
@@ -197,7 +196,6 @@ def add_course():
 
 @app.route('/', methods=['GET'])
 def ratings():
-    #user_id = "1"
     user_id = session['username']
     cur = mysql.connection.cursor()
 
@@ -207,16 +205,13 @@ def ratings():
         INNER JOIN UserTakenCourses ON Users.uid = UserTakenCourses.uid
         LEFT JOIN Ratings ON UserTakenCourses.course_code = Ratings.course_code and Users.uid = Ratings.uid
         WHERE Users.uid = %s
-    """, (user_id))
-
+    """, (user_id,))
     courses = [{'course_code': row['course_code'], 'rating': row['rating'] if row['rating'] is not None else ""} for row in cur.fetchall()]
-
     cur.close()
     return courses
 
 @app.route('/submit-ratings', methods=['POST'])
 def submit_ratings():
-    #user_id = '1' 
     user_id = session['username']
     cur = mysql.connection.cursor()
 

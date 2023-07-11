@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_mysqldb import MySQL
 import logging
 import bcrypt
+from call_api import API_calls
 import traceback
 
 app = Flask(__name__)
@@ -10,15 +11,20 @@ app = Flask(__name__)
 # Configure MySQL
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'CS348USER'
-app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'jasminefeature'
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = ''
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
 # Initialize MySQL
 mysql = MySQL(app)
 
+@app.before_first_request
+def before_first_request():
+    print("importing data")
+    # comment the following line if don't want to use production data
+    #API_calls(app, mysql)
 
 
 @app.route('/')

@@ -11,9 +11,9 @@ app = Flask(__name__)
 # Configure MySQL
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Jingman20020813'
-app.config['MYSQL_DB'] = 'testdb'
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = ''
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
@@ -24,7 +24,7 @@ mysql = MySQL(app)
 def before_first_request():
     print("importing data")
     # comment the following line if don't want to use production data
-    API_calls(app, mysql)
+    #API_calls(app, mysql)
 
 
 @app.route('/')

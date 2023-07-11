@@ -29,7 +29,8 @@ Milestone 2
 which user is using the application. Checks for incorrect passwords and stores them encrypted
 in the database. (Implemented in app.py, index.html, signup.html and login.html, shown on the homepage on the web application)
 
-6. Displays the highest-rated courses in the web application. 
+6. Displays the highest-rated courses in the web application. Users can see this by clicking the "View Top Rated Courses"
+button on the homepage. Implemented in index.html, charts.html, and app.py
 
 ## Installation
 

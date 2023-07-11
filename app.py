@@ -177,21 +177,12 @@ def add_course():
             cur = mysql.connection.cursor()
             try:
                 cur.execute(f'SELECT prereq FROM Requirements WHERE course_code = "{course_code}"')
-                requirements = json.loads(cur.fetchone()['prereq'])
+                requirements = [row['prereq'] for row in cur.fetchall()]
                 cur.execute(f'SELECT course_code FROM UserTakenCourses WHERE uid = "{userid}"')
                 taken = [row['course_code'] for row in cur.fetchall()]
                 for course in requirements:
-                    if isinstance(course, str):
-                        if course not in taken:
-                            return 'Missing Prerequisite!'
-                    else:
-                        lst_taken = False
-                        for c in course:
-                            if c in taken:
-                                lst_taken = True
-                                break
-                        if not lst_taken:
-                            return 'Missing Prerequisite!'
+                    if course not in taken:
+                        return 'Missing Prerequisite!'
                 cur.execute(f'INSERT INTO UserPlannedCourses (uid, course_code) VALUES ({userid}, "{course_code}")') #replace test with user login!            
                 mysql.connection.commit()
                 cur.close()

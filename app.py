@@ -208,8 +208,16 @@ def ratings():
         WHERE Users.uid = %s
     """, (user_id,))
     courses = [{'course_code': row['course_code'], 'rating': row['rating'] if row['rating'] is not None else ""} for row in cur.fetchall()]
+    
+    cur.execute("""
+        SELECT friend_id 
+        FROM UserFriends
+        WHERE uid = %s
+    """, (user_id,))
+    friends = [{'friend_id': row['friend_id']} for row in cur.fetchall()]
+
     cur.close()
-    return courses
+    return render_template('index.html', courses=courses, friends=friends)
 
 @app.route('/submit-ratings', methods=['POST'])
 def submit_ratings():
@@ -229,7 +237,7 @@ def submit_ratings():
 
     return redirect(url_for('index'))
 
-@app.route('/friend-courses', methods=['POST'])
+@app.route('/friend-courses', methods=['GET'])
 def get_friend_courses():
     friend_id = request.form.get('friend_id')  # friend id taken from form
     user_id = session['username']
@@ -256,7 +264,7 @@ def get_friend_courses():
     return render_template('friend_courses.html', courses=courses)
 
 
-@app.route('/course-friends', methods=['POST'])
+@app.route('/course-friends', methods=['GET'])
 def get_friends_same_course():
     course_code = request.form.get('course_code')
     cur = mysql.connection.cursor()

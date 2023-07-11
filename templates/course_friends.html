@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Friends Taking this Course</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+</head>
+<body>
+    <h1>Friends Taking this Course</h1>
+    <ul>
+        {% for friend in friends %}
+        <li>{{ friend.friend_id }} {{ friend.name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

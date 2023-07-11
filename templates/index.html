@@ -111,8 +111,8 @@
     {% if session['username'] %}
     <form action="/course-friends" method="get">
         <select name="course_code">
-            {% for course in courses %}
-            <option value="{{ course.course_code }}">{{ course.course_name }}</option>
+            {% for course in plannedCourses %}
+            <option value="{{ course.course_code }}">{{ course.course_code }}</option>
             {% endfor %}
         </select>
         <button type="submit">View Friends in Course</button>

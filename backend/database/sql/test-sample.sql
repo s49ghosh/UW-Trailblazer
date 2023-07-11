@@ -64,11 +64,11 @@ VALUES
     (3, 'Michael', 'Johnson');
 
 -- Insert sample data into Subjects table
-INSERT INTO Subjects (subject_code, subject_name, num_courses, avg_rating)
+INSERT INTO Subjects (subject_code, subject_name, avg_rating)
 VALUES
-    ('SUB1', 'Mathematics', 5, 4.2),
-    ('SUB2', 'Computer Science', 8, 4.5),
-    ('SUB3', 'Physics', 3, 3.8);
+    ('SUB1', 'Mathematics', 4.2),
+    ('SUB2', 'Computer Science', 4.5),
+    ('SUB3', 'Physics', 3.8);
 
 -- Insert sample data into Courses table
 INSERT INTO Courses (course_code, course_name, subject_code, course_level)
@@ -87,7 +87,7 @@ VALUES
 
 
 -- Insert sample data into EnrollCapacity table
-INSERT INTO EnrollCapacity (course_code, term_id, enroll_cap)
+INSERT INTO EnrollCapacity (term_id, course_code, enroll_cap)
 VALUES
     (1, 'COURSE1', 50),
     (1, 'COURSE2', 40),
@@ -135,8 +135,8 @@ SELECT * FROM Subjects;
 -- Insert sample data into Requirements table
 INSERT INTO Requirements (course_code, prereq)
 VALUES
-    ('COURSE2', 'COURSE1'),
-    ('COURSE3', 'COURSE2');
+    ('COURSE2', ['COURSE1']),
+    ('COURSE3', [['COURSE1','COURSE2']]);
 
 INSERT INTO UserTakenCourses (uid, course_code) VALUES (2, "COURSE3");
 SELECT prereq FROM Requirements WHERE course_code = "COURSE3";
@@ -162,11 +162,9 @@ AND c.course_code NOT IN (
     WHERE u.uid = 1
 )
 
--- Insert sample data into CourseAvailability table
-INSERT INTO CourseAvailability (term_id, course_code)
+-- Insert sample data into logindetails table
+INSERT INTO logindetails (course_code, prereq)
 VALUES
-    (2, 'COURSE1'),
-    (1, 'COURSE2'),
-    (2, 'COURSE3'),
-    (1, 'COURSE1');
+    ('COURSE2', 'COURSE1'),
+    ('COURSE3', 'COURSE2');
 

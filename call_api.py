@@ -6,19 +6,6 @@ import logging
 import json
 import re
 
-app = Flask(__name__)
-
-# Configure MySQL
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'CS348USER'
-app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'jasminefeature'
-app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
-
-# Initialize MySQL
-mysql = MySQL(app)
-
 # Set Open API key
 openapi_key = '1E5B68EB071D404F8D68C2571CDBA921'
 
@@ -112,7 +99,7 @@ def separate_reqs(requirements):
 
 
 
-def Term_table():
+def Term_table(mysql):
     # Call API endpoint: /v3/terms
     url = "https://openapi.data.uwaterloo.ca/v3/terms"
     headers = {'x-api-key': openapi_key}
@@ -144,7 +131,7 @@ def Term_table():
     cursor.close()
     return terms
 
-def Course_table(terms):
+def Course_table(terms,mysql):
     cursor = mysql.connection.cursor()
 
     for term_id in terms:
@@ -186,19 +173,22 @@ def Course_table(terms):
                 cursor.execute(insert_enrollment)
                 mysql.connection.commit()
 
-            # requirements
-            requirement = course['requirementsDescription']
-            #print(requirement)
-            prereq = separate_reqs(requirement)
-            #print(prereq)
-            json_string = json.dumps(prereq)
-            insert_requirement = f"INSERT IGNORE INTO Requirements(course_code, prereq) VALUES ('{course_code}', '{json_string}') ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
-            cursor.execute(insert_requirement)
-            mysql.connection.commit()
+            try:
+                # requirements
+                requirement = course['requirementsDescription']
+                #print(requirement)
+                prereq = separate_reqs(requirement)
+                #print(prereq)
+                json_string = json.dumps(prereq)
+                insert_requirement = f"INSERT IGNORE INTO Requirements(course_code, prereq) VALUES ('{course_code}', '{json_string}') ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
+                cursor.execute(insert_requirement)
+                mysql.connection.commit()
+            except mysql.OperationalError as e:
+                continue
 
     cursor.close()
 
-def Subjects():
+def Subjects(mysql):
     # Call API endpoint: /v3/Subjects
     url = "https://openapi.data.uwaterloo.ca/v3/Subjects"
     headers = {'x-api-key': openapi_key}
@@ -217,13 +207,12 @@ def Subjects():
 
     cursor.close()
 
-
-@app.route('/')
-def API_calls():
-    Subjects()
-    terms = Term_table()
-    Course_table(terms)
-    return 'Tables created'
+def API_calls(app, mysql):
+    print("start creating tables")
+    Subjects(mysql)
+    terms = Term_table(mysql)
+    Course_table(terms,mysql)
+    print("tables created")
 
 if __name__ == '__main__':
-    app.run()
+    print("here")

@@ -4,6 +4,7 @@ from flask_mysqldb import MySQL
 import logging
 import bcrypt
 import traceback
+import ast
 
 app = Flask(__name__)
 
@@ -12,7 +13,7 @@ app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'CS348USER'
 app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'jasminefeature'
+app.config['MYSQL_DB'] = 'proddb'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
@@ -112,11 +113,10 @@ def add_user():
     uid = request.form['uid']
     fname = request.form['fname']
     lname = request.form['lname']
-    startyear = request.form['startyear']
 
     # Insert data into the database
     cur = mysql.connection.cursor()
-    cur.execute("INSERT INTO Users (uid, first_name, last_name, start_year) VALUES (%s, %s,%s, %s)", (uid, fname, lname, startyear))
+    cur.execute("INSERT INTO Users (uid, first_name, last_name) VALUES (%s, %s, %s)", (uid, fname, lname))
     mysql.connection.commit()
     cur.close()
 
@@ -174,9 +174,21 @@ def add_course():
                 requirements = [row['prereq'] for row in cur.fetchall()]
                 cur.execute(f'SELECT course_code FROM UserTakenCourses WHERE uid = "{userid}"')
                 taken = [row['course_code'] for row in cur.fetchall()]
-                for course in requirements:
-                    if course not in taken:
-                        return 'Missing Prerequisite!'
+                requirements = requirements[0]
+                requirements = requirements.strip('"')
+                requirements = ast.literal_eval(requirements)
+                for courses in requirements:
+                    if type(courses) == list:
+                        flag = 0
+                        for item in courses:
+                            if item in taken:
+                                flag = 1
+                                break
+                        if not flag:
+                            return f'Missing Prerequisite!: One of {courses}'
+                    else: 
+                        if courses not in taken:
+                            return f'Missing Prerequisite!: {courses}'
                 cur.execute(f'INSERT INTO UserPlannedCourses (uid, course_code) VALUES ({userid}, "{course_code}")') #replace test with user login!            
                 mysql.connection.commit()
                 cur.close()

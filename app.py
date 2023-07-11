@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_mysqldb import MySQL
 import logging
 import bcrypt
+import traceback
 
 app = Flask(__name__)
 
@@ -227,6 +228,23 @@ def submit_ratings():
     cur.close()
 
     return redirect(url_for('index'))
+
+@app.route('/charts', methods=['GET']) 
+def viewTopRated():
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute("SELECT course_name, rating FROM courses ORDER BY rating DESC")
+        result = cur.fetchall()
+        courses = [row['course_name'] for row in result]
+        ratings = [row['rating'] for row in result]
+        if len(courses) > 100:
+            courses = courses[0:101]
+            ratings = ratings[0:101]
+        return render_template('charts.html', courses=courses, ratings=ratings)
+    except Exception as e:
+        traceback.print_exc()
+        return f'Error: {str(e)}'
+    
 
 
 if __name__ == '__main__':

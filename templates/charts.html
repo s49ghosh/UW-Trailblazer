@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Top Rated Courses</title>
+  <link rel="stylesheet" href="../static/styles/styles.css">
+</head>
+<body>
+    <table>
+      <tr>
+        <th>Course</th>
+        <th>Rating</th>
+      </tr>
+      {% for i in range(courses|length) %}
+        <tr>
+          <td>{{ courses[i] }}</td>
+          <td>{{ ratings[i] }}</td>
+        </tr>
+      {% endfor %}
+      </table>
+</body>
+</html>

@@ -33,15 +33,17 @@ def index():
     termdropdown = cur.fetchall()
 
     friends = []
+    if 'username' in session:
+        user_id = session['username']
+        cur.execute("SELECT * FROM userfriends WHERE uid = %s", (user_id,))
+        friends = cur.fetchall()
+
     cur.close()
 
     takenCourses = ''
     if 'username' in session:
-        takenCourses = ratings()
-        user_id = session['username']
-        cur.execute("SELECT * FROM userfriends WHERE uid = %s", (user_id,))
-        friends = cur.fetchall()
-    
+        takenCourses = ratings() 
+        
     return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown, friends=friends)
 
 

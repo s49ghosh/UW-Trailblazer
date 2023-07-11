@@ -2,9 +2,7 @@
 <html>
 <head>
     <title>Sign Up</title>
-    <style>
-        /* Add your custom CSS styles here */
-    </style>
+    <link rel="stylesheet" href="../static/styles/styles.css">
 </head>
 <body>
     <h1>Sign Up</h1>
@@ -12,7 +10,7 @@
         <p>{{ error }}</p>
     {% endif %}
     <form action="/signup" method="POST">
-        <input type="text" name="username" placeholder="Username" required>
+        <input type="text" name="username" placeholder="UWaterloo Number" required>
         <input type="text" name="fname" placeholder="First Name" required>
         <input type="text" name="lname" placeholder="Last Name" required>
         <input type="password" name="password" placeholder="Password" required>

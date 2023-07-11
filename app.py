@@ -275,17 +275,17 @@ def get_friends_same_course():
     user_id = session['username']
     
     cur.execute("""
-        SELECT DISTINCT uf.friend_id, u.name
+        SELECT DISTINCT uf.friend_id, u.first_name
         FROM UserFriends uf
         INNER JOIN Users u ON uf.friend_id = u.uid
         INNER JOIN UserPlannedCourses utc ON uf.friend_id = utc.uid
         WHERE uf.uid = %s AND utc.course_code = %s
     """, (user_id, course_code))
     
-    friends = [{'friend_id': row['friend_id'], 'name': row['name']} for row in cur.fetchall()]
+    friends = [{'friend_id': row['friend_id'], 'first_name': row['first_name']} for row in cur.fetchall()]
 
     cur.close()
-    return render_template('friends_courses.html', items=friends)
+    return render_template('course_friends.html', friends=friends)
 
 
 @app.route('/charts', methods=['GET']) 

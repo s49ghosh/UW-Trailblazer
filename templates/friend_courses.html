@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Friend's Courses</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+</head>
+<body>
+    <h1>Explore Courses and Friends</h1>
+    
+    <form action="/friend-courses" method="POST">
+        <label for="friend_id">Friend ID:</label>
+        <input type="number" id="friend_id" name="friend_id" required>
+        <input type="submit" value="Find Common Courses">
+    </form>
+    
+    <form action="/course-friends" method="POST">
+        <label for="course_code">Course Code:</label>
+        <input type="text" id="course_code" name="course_code" required>
+        <input type="submit" value="Find Friends Taking this Course">
+    </form>
+    
+    <h2>Common Courses/Friends</h2>
+    <ul>
+        {% for item in items %}
+        <li>{{ item.code }} {{ item.name }} {{ item.subject_name }} {{ item.avg_rating }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_mysqldb import MySQL
 import logging
 import bcrypt
+from call_api import API_calls
 import traceback
 import ast
 
@@ -20,6 +21,11 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # Initialize MySQL
 mysql = MySQL(app)
 
+@app.before_first_request
+def before_first_request():
+    print("importing data")
+    # comment the following line if don't want to use production data
+    #API_calls(app, mysql)
 
 
 @app.route('/')

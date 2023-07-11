@@ -33,18 +33,22 @@ def index():
     termdropdown = cur.fetchall()
 
     friends = []
+    plannedCourses = []
     if 'username' in session:
         user_id = session['username']
         cur.execute("SELECT * FROM userfriends WHERE uid = %s", (user_id,))
         friends = cur.fetchall()
+
+        cur.execute("SELECT * FROM UserPlannedCourses WHERE uid = %s", (user_id,))
+        plannedCourses = cur.fetchall()
 
     cur.close()
 
     takenCourses = ''
     if 'username' in session:
         takenCourses = ratings() 
-        
-    return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown, friends=friends)
+
+    return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown, friends=friends, plannedCourses=plannedCourses)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -236,9 +240,9 @@ def submit_ratings():
 
     return redirect(url_for('index'))
 
-@app.route('/friend-courses', methods=['GET'])
+@app.route('/friend-courses', methods=['GET', 'POST'])
 def get_friend_courses():
-    friend_id = request.form.get('friend_id')  # friend id taken from form
+    friend_id = request.args.get('friend_id')  # friend id taken from form
     user_id = session['username']
     
     cur = mysql.connection.cursor()
@@ -247,25 +251,25 @@ def get_friend_courses():
         SELECT DISTINCT uf.friend_id, c.course_code, c.course_name, s.subject_name, s.avg_rating
         FROM userfriends uf
         JOIN users u ON uf.friend_id = u.uid
-        JOIN usertakencourses ut ON u.uid = ut.uid
+        JOIN userplannedcourses ut ON u.uid = ut.uid
         JOIN courses c ON ut.course_code = c.course_code
         JOIN subjects s ON c.subject_code = s.subject_code
         WHERE uf.uid = %s
         AND c.course_code IN (
             SELECT course_code
-            FROM usertakencourses
+            FROM userplannedcourses
             WHERE uid = %s
         )
-    """, (user_id, friend_id,))
+    """, (user_id, friend_id))
 
     courses = cur.fetchall()
     cur.close()
     return render_template('friend_courses.html', courses=courses)
 
 
-@app.route('/course-friends', methods=['GET'])
+@app.route('/course-friends', methods=['GET', 'POST'])
 def get_friends_same_course():
-    course_code = request.form.get('course_code')
+    course_code = request.args.get('course_code')
     cur = mysql.connection.cursor()
     
     user_id = session['username']
@@ -274,7 +278,7 @@ def get_friends_same_course():
         SELECT DISTINCT uf.friend_id, u.name
         FROM UserFriends uf
         INNER JOIN Users u ON uf.friend_id = u.uid
-        INNER JOIN UserTakenCourses utc ON uf.friend_id = utc.uid
+        INNER JOIN UserPlannedCourses utc ON uf.friend_id = utc.uid
         WHERE uf.uid = %s AND utc.course_code = %s
     """, (user_id, course_code))
     

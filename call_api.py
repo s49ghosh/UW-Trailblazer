@@ -183,7 +183,7 @@ def Course_table(terms,mysql):
                 insert_requirement = f"INSERT IGNORE INTO Requirements(course_code, prereq) VALUES ('{course_code}', '{json_string}') ON DUPLICATE KEY UPDATE course_code = '{course_code}'"
                 cursor.execute(insert_requirement)
                 mysql.connection.commit()
-            except mysql.OperationalError as e:
+            except Exception as e:
                 continue
 
     cursor.close()

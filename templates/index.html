@@ -94,5 +94,26 @@
     <form action="/charts" ethod="get">
         <button type="submit">View Top Rated Courses</button>
     </form>
+
+    <h2>Friends' Courses</h2>
+    {% if session['username'] %}
+    <form action="/friend-courses" method="get">
+        <select name="friend_id">
+            {% for friend in friends %}
+            <option value="{{ friend.friend_id }}">{{ friend.friend_name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">View Friend's Courses</button>
+    </form>
+    {% if friend_courses %}
+    <ul>
+        {% for course in friend_courses %}
+        <li>{{ course.course_code }} {{ course.course_name }} {{ course.subject_name }} {{ course.avg_rating }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% else %}
+    <p>Please sign in to see friends' courses</p>
+    {% endif %}
 </body>
 </html>

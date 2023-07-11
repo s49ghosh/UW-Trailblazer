@@ -12,17 +12,16 @@ app = Flask(__name__)
 # Configure MySQL
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'CS348USER'
-app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'proddb'
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = ''
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
 # Initialize MySQL
 mysql = MySQL(app)
 
-@app.before_first_request
-def before_first_request():
+with app.app_context():
     print("importing data")
     # comment the following line if don't want to use production data
     #API_calls(app, mysql)

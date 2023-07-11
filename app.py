@@ -31,13 +31,18 @@ def index():
     subject = cur.fetchall()
     cur.execute("SELECT * FROM Terms")
     termdropdown = cur.fetchall()
+
+    friends = []
     cur.close()
 
     takenCourses = ''
     if 'username' in session:
-        takenCourses = ratings() 
+        takenCourses = ratings()
+        user_id = session['username']
+        cur.execute("SELECT * FROM userfriends WHERE uid = %s", (user_id,))
+        friends = cur.fetchall()
     
-    return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown)
+    return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown, friends=friends)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -208,16 +213,8 @@ def ratings():
         WHERE Users.uid = %s
     """, (user_id,))
     courses = [{'course_code': row['course_code'], 'rating': row['rating'] if row['rating'] is not None else ""} for row in cur.fetchall()]
-    
-    cur.execute("""
-        SELECT friend_id 
-        FROM UserFriends
-        WHERE uid = %s
-    """, (user_id,))
-    friends = [{'friend_id': row['friend_id']} for row in cur.fetchall()]
-
     cur.close()
-    return render_template('index.html', courses=courses, friends=friends)
+    return courses
 
 @app.route('/submit-ratings', methods=['POST'])
 def submit_ratings():

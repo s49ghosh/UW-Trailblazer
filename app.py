@@ -237,6 +237,9 @@ def viewTopRated():
         result = cur.fetchall()
         courses = [row['course_name'] for row in result]
         ratings = [row['rating'] for row in result]
+        if len(courses) > 100:
+            courses = courses[0:101]
+            ratings = ratings[0:101]
         return render_template('charts.html', courses=courses, ratings=ratings)
     except Exception as e:
         traceback.print_exc()

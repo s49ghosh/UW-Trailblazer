@@ -19,9 +19,12 @@ of the searched courses will provide various information, such as friends taking
 course, course term availability, subject, course code, etc.
 (Implemented in app.py, index.html and search.html, shown on the homepage on the web application)
 
-5. The implementation of seeing what a user’s friends are taking. This feature makes users
-more inclined to take a course if their friends are taking it, creating a social aspect of the
-application. (Implemented in app.py and index.html, shown on the homepage on the web application)
+4. Users are given the ability to select a friends from their friends and display all courses that
+their friend and them both plan to take (we display the course name, course_code, subject_name, as
+well as the avg_rating that course has). User is also given the ability to select a course from their
+planned to take courses and will be able to see all friends (First and Last name) who are also planning
+to take that course. (Implemented in app.py, index.html, friend-course.html, and course-friends.html,
+shown on the homepage on the web application)
 
 Milestone 2
 

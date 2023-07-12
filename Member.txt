@@ -5,4 +5,9 @@ Kevin Zhang(20887940): R9a, R9b, part of C3, part of C5
 Sohom Ghosh (20895880): R6a, R8b, part of C3, part of C5
 
 
+Milestone 2:
+Helen Xia (20880366):  C5, R8c, R8d, R10a, R10b, R10c, C1
+Jasmine Xu (20881223): C4, R4, R7c, R7d
+Kevin Zhang (20887940): C5, R9c
+Sohom Ghosh (20895880): C3, C4, C5, R5, R6c, R6d, R11a, R11b, R11c, R11d
 

@@ -1,41 +1,41 @@
-course_code	course_name			        subject_code	course_level	enroll_cap	rating
-COURSE1		Calculus I			        SUB1		    100		        50		    NULL
-COURSE2		Introduction to Programming	SUB2		    200		        40		    NULL
-COURSE3		Classical Mechanics		    SUB3		    300		        30		    NULL
+course_code	course_name			        subject_code	course_level    rating
+COURSE1		Calculus I			        SUB1		    100		        NULL
+COURSE2		Introduction to Programming	SUB2		    200		        NULL
+COURSE3		Classical Mechanics		    SUB3		    300		        NULL
 
-subject_code	subject_name		num_courses	    avg_rating
-SUB1		    Mathematics		    5		        4.20
-SUB2		    Computer Science	8		        4.50
-SUB3		    Physics			    3		        3.80
+subject_code	subject_name	    avg_rating
+SUB1		    Mathematics		    4.20
+SUB2		    Computer Science    4.50
+SUB3		    Physics			    3.80
 
-course_code	course_name			        subject_code	course_level	enroll_cap	rating
-COURSE1		Calculus I			        SUB1	        100		        50		    3.00
-COURSE2		Introduction to Programming	SUB2		    200		        40		    NULL
-COURSE3		Classical Mechanics		    SUB3		    300		        30		    NULL
+course_code	course_name			        subject_code	course_level    rating
+COURSE1		Calculus I			        SUB1		    100		        3.00
+COURSE2		Introduction to Programming	SUB2		    200		        NULL
+COURSE3		Classical Mechanics		    SUB3		    300		        NULL
 
-subject_code	subject_name		num_courses	avg_rating
-SUB1		    Mathematics		    5		    3.00
-SUB2		    Computer Science	8		    4.50
-SUB3		    Physics			    3		    3.80
+subject_code	subject_name		avg_rating
+SUB1		    Mathematics		    3.00
+SUB2		    Computer Science	4.50
+SUB3		    Physics			    3.80
 
-course_code	course_name			        subject_code	course_level	enroll_cap	rating
-COURSE1		Calculus I			        SUB1		    100		        50		    3.00
-COURSE2		Introduction to Programming	SUB2		    200		        40		    5.00
-COURSE3		Classical Mechanics		    SUB3		    300		        30		    3.00
+course_code	course_name			        subject_code	course_level    rating
+COURSE1		Calculus I			        SUB1		    100		        3.00
+COURSE2		Introduction to Programming	SUB2		    200		        5.00
+COURSE3		Classical Mechanics		    SUB3		    300		        3.00
 
-subject_code	subject_name		num_courses	avg_rating
-SUB1		    Mathematics		    5		    3.00
-SUB2		    Computer Science	8		    5.00
-SUB3		    Physics			    3		    3.00
+subject_code	subject_name		avg_rating
+SUB1		    Mathematics		    3.00
+SUB2		    Computer Science	5.00
+SUB3		    Physics			    3.00
 
 prereq
-COURSE2
+[['COURSE1','COURSE2']]
 
 course_code
 COURSE1
 
-course_code	course_name	subject_code	course_level	enroll_cap	rating	subject_code	subject_name	num_courses	    avg_rating
-COURSE1		Calculus I	SUB1		    100		        50		    3.00	SUB1		    Mathematics	    5		        3.00
+course_code	course_name	subject_code	course_level	rating	subject_code	subject_name	avg_rating
+COURSE1		Calculus I	SUB1		    100		        3.00	SUB1		    Mathematics	    3.00
 
 friend_id	course_code	course_name			            subject_name		avg_rating
 2		    COURSE1		Calculus I			            Mathematics		    3.00
@@ -45,3 +45,13 @@ friend_id	course_code	course_name			            subject_name		avg_rating
 3		    COURSE2		Introduction to Programming	    Computer Science	5.00
 3		    COURSE3		Classical Mechanics		        Physics			    3.00
 
+uid     password
+1       jdoe123
+
+uid     first_name      last_name
+1       John            Doe
+
+course_name                         rating
+Introduction to Programming         5.00
+Calculus I                          3.00
+Classical Mechanics                 3.00

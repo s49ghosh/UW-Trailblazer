@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Common Courses</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+</head>
+<body>
+    <h1>Common Courses</h1>
+    <ul>
+        {% for course in courses %}
+            <li>{{ course.course_code }} {{ course.course_name }} {{ course.subject_name }} {{ course.avg_rating }}</li>
+        {% endfor %}
+        </ul>        
+</body>
+</html>

@@ -56,44 +56,12 @@ END; //
 
 DELIMITER ;
 
--- Insert sample data into Users table
 INSERT INTO Users (uid, first_name, last_name)
 VALUES
     (1, 'John', 'Doe'),
     (2, 'Jane', 'Smith'),
     (3, 'Michael', 'Johnson');
 
--- Insert sample data into Subjects table
-INSERT INTO Subjects (subject_code, subject_name, avg_rating)
-VALUES
-    ('SUB1', 'Mathematics', 4.2),
-    ('SUB2', 'Computer Science', 4.5),
-    ('SUB3', 'Physics', 3.8);
-
--- Insert sample data into Courses table
-INSERT INTO Courses (course_code, course_name, subject_code, course_level)
-VALUES
-    ('COURSE1', 'Calculus I', 'SUB1', 100),
-    ('COURSE2', 'Introduction to Programming', 'SUB2', 200),
-    ('COURSE3', 'Classical Mechanics', 'SUB3', 300);
-
--- Insert sample data into Terms table
-INSERT INTO Terms (term_id, start_date, end_date, term_season)
-VALUES
-    (1 , '2023-01-01', '2023-04-30', 'Winter'),
-    (2 , '2023-05-01', '2023-08-31', 'Spring'),
-    (3 , '2023-09-01', '2023-12-31', 'Fall');
-
-
--- Insert sample data into EnrollCapacity table
-INSERT INTO EnrollCapacity (term_id, course_code, enroll_cap)
-VALUES
-    (1, 'COURSE1', 50),
-    (1, 'COURSE2', 40),
-    (2, 'COURSE3', 30);
-
-
--- Insert sample data into UserFriends table
 INSERT INTO UserFriends (uid, friend_id)
 VALUES
     (1, 2),
@@ -101,51 +69,34 @@ VALUES
     (2, 1),
     (3, 1);
 
--- Insert sample data into UserTakenCourses table
-INSERT INTO UserTakenCourses (uid, course_code)
-VALUES
-    (1, 'COURSE1'),
-    (2, 'COURSE1'),
-    (2, 'COURSE2'),
-    (3, 'COURSE1'),
-    (3, 'COURSE2'),
-    (3, 'COURSE3');
-
-SELECT * FROM Courses;
-SELECT * FROM Subjects;
-
--- Insert sample data into Ratings table
-INSERT INTO Ratings (course_code, rating, uid)
-VALUES
-    ('COURSE1', 4, 1),
-    ('COURSE1', 2, 2);
-
-SELECT * FROM Courses;
-SELECT * FROM Subjects;
+SELECT * FROM courses ORDER BY rating DESC LIMIT 10;
+SELECT * FROM subjects ORDER BY avg_rating DESC LIMIT 10;
 
 INSERT INTO Ratings (course_code, rating, uid)
 VALUES
-    ('COURSE2', 5, 2),
-    ('COURSE3', 3, 3);
+    ('CS 240', 5, 2),
+    ('CS 241', 3, 3),
+    ('CS 341', 5, 2),
+    ('CS 350', 4, 3),
+    ('CS 245', 1, 1),
+    ('CS 240', 3, 3),
+    ('CS 136', 4, 2),
+    ('CS 136', 3, 1),
+    ('ECE 222', 2, 1),
+    ('ECE 222', 3, 3);
 
-SELECT * FROM Courses;
-SELECT * FROM Subjects;
+SELECT * FROM courses ORDER BY rating DESC LIMIT 10;
+SELECT * FROM subjects ORDER BY avg_rating DESC LIMIT 10;
 
--- Insert sample data into Requirements table
-INSERT INTO Requirements (course_code, prereq)
-VALUES
-    ('COURSE2', "['COURSE1']"),
-    ('COURSE3', "[['COURSE1','COURSE2']]");
-
-INSERT INTO UserTakenCourses (uid, course_code) VALUES (2, "COURSE3");
-SELECT prereq FROM Requirements WHERE course_code = "COURSE3";
-SELECT course_code FROM UserTakenCourses WHERE uid = 1;
-INSERT INTO UserPlannedCourses (uid, course_code) VALUES (1, "COURSE2");
-
+INSERT INTO UserTakenCourses (uid, course_code) VALUES (2, "CS 240");
+SELECT prereq FROM Requirements WHERE course_code = "CS 341";
+SELECT course_code FROM UserTakenCourses WHERE uid = 2;
+INSERT INTO UserPlannedCourses (uid, course_code) VALUES (2, "CS 341");
 
 SELECT * FROM Courses
-WHERE course_code LIKE "%course1%"
-AND subject_code LIKE "%sub1"
+JOIN Subjects ON Courses.subject_code = Subjects.subject_code
+WHERE course_code LIKE "341"
+AND Subjects.subject_code LIKE "" 
 LIMIT 10;
 
 SELECT DISTINCT uf.friend_id, c.course_code, c.course_name, s.subject_name, s.avg_rating
@@ -161,7 +112,6 @@ AND c.course_code NOT IN (
     WHERE u.uid = 1
 );
 
--- Insert sample data into logindetails table
 INSERT INTO logindetails (uid, password)
 VALUES
     (1, 'jdoe123'),
@@ -170,4 +120,4 @@ VALUES
 SELECT * FROM LoginDetails WHERE uid = 1;
 SELECT * FROM Users WHERE uid = 1;
 
-SELECT course_name, rating FROM courses ORDER BY rating DESC;
+SELECT course_name, rating FROM courses ORDER BY rating DESC LIMIT 10;

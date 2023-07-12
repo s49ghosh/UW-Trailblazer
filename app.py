@@ -42,7 +42,7 @@ def index():
     plannedCourses = []
     if 'username' in session:
         user_id = session['username']
-        cur.execute("SELECT * FROM userfriends WHERE uid = %s", (user_id,))
+        cur.execute("SELECT * FROM userfriends JOIN users ON userfriends.friend_id = users.uid WHERE userfriends.uid = %s", (user_id,))
         friends = cur.fetchall()
 
         cur.execute("SELECT * FROM UserPlannedCourses WHERE uid = %s", (user_id,))

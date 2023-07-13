@@ -1,39 +1,30 @@
-# Course Connect
-CS 348: Introduction to Database Systems Spring 2023 Group Project
-
-Members: Helen Xia, Jasmine Xu, Sohom Ghosh, Kevin Zhang
+# UW Trailblazer
 
 ### Current Features that the application supports
-Milestone 1
 1. The user can input previous courses through search and click then see their prerequisite
 and term availabilities. Ultimately, we want this to be a drag-and-drop feature for a better
-user experience. (Implemented in app.py and index.html, shown on the homepage on the web application)
+user experience. 
 
 2. After the user has inputted previous courses, we ask them to rate them. The average
 course rating is calculated and stored for each course and displayed when shown to
-users. (Implemented in app.py, index.html and ratings_triggers.sql, shown on the homepage on the web application)
-
+users. 
 
 3. Users can filter their courses based on rating, term availability, and subject. This display
 of the searched courses will provide various information, such as friends taking the
 course, course term availability, subject, course code, etc.
-(Implemented in app.py, index.html and search.html, shown on the homepage on the web application)
+
 
 4. Users are given the ability to select a friends from their friends and display all courses that
 their friend and them both plan to take (we display the course name, course_code, subject_name, as
 well as the avg_rating that course has). User is also given the ability to select a course from their
 planned to take courses and will be able to see all friends (First and Last name) who are also planning
-to take that course. (Implemented in app.py, index.html, friend-course.html, and course-friends.html,
-shown on the homepage on the web application)
-
-Milestone 2
+to take that course. 
 
 5. Login and sign/up page for existing and new users. Sessions are saved and used to track
 which user is using the application. Checks for incorrect passwords and stores them encrypted
-in the database. (Implemented in app.py, index.html, signup.html and login.html, shown on the homepage on the web application)
-
+in the database. 
 6. Displays the highest-rated courses in the web application. Users can see this by clicking the "View Top Rated Courses"
-button on the homepage. Implemented in index.html, charts.html, and app.py
+button on the homepage.
 
 ## Installation
 

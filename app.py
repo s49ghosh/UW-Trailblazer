@@ -173,6 +173,8 @@ def login():
             return render_template('login.html', error=error)
 
     return render_template('login.html')   
+
+
 @app.route('/confirmed', methods=['GET', 'POST'])
 def confirmed_email():
     if request.method == 'POST':

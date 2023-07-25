@@ -396,15 +396,24 @@ def get_friends_same_course():
 @app.route('/charts', methods=['GET']) 
 def viewTopRated():
     cur = mysql.connection.cursor()
+    num = request.args.get('amount')
+    if not num:
+        num = 100
+    num = int(num)
     try:
-        cur.execute("SELECT course_name, rating FROM courses ORDER BY rating DESC")
+        cur.execute("""SELECT T.course_name, T.rating, course_code, COUNT(T1.takens) AS num_takens
+                        FROM
+                            (SELECT course_name, rating, course_code FROM courses ORDER BY rating DESC LIMIT %s) AS T
+                        LEFT JOIN
+                            (SELECT course_code AS takens FROM ratings) AS T1 ON T.course_code = T1.takens
+                        GROUP BY T.course_name, T.rating, T.course_code;""", (num,))
         result = cur.fetchall()
         courses = [row['course_name'] for row in result]
         ratings = [row['rating'] for row in result]
-        if len(courses) > 100:
-            courses = courses[0:101]
-            ratings = ratings[0:101]
-        return render_template('charts.html', courses=courses, ratings=ratings)
+        codes = [row['course_code'] for row in result]
+        numRatings = [row['num_takens'] for row in result]
+        topN = [10, 25, 50, 100, 200]
+        return render_template('charts.html', courses=courses, ratings=ratings, codes=codes, numRatings=numRatings, top=topN)
     except Exception as e:
         traceback.print_exc()
         return f'Error: {str(e)}'

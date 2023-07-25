@@ -8,6 +8,7 @@ import traceback
 import ast
 from flask_mail import Mail, Message
 import secrets
+from itsdangerous import URLSafeTimedSerializer
 
 app = Flask(__name__)
 
@@ -42,7 +43,6 @@ with app.app_context():
     #API_calls(app, mysql)
 
 
-from itsdangerous import URLSafeTimedSerializer
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])

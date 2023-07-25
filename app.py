@@ -1,5 +1,5 @@
 from fnmatch import fnmatchcase
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_mysqldb import MySQL
 import logging
 import bcrypt
@@ -408,7 +408,86 @@ def viewTopRated():
     except Exception as e:
         traceback.print_exc()
         return f'Error: {str(e)}'
-    
+
+@app.route('/comments/<course_code>', methods=['GET', 'POST'])
+def handle_comments(course_code):
+    if request.method == 'GET':
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            SELECT u.first_name, u.last_name, c.comment, c.cid, u.uid
+            FROM Comments c
+            JOIN Users u ON c.uid = u.uid
+            WHERE c.course_code = %s
+        """, (course_code,))
+        comments = cur.fetchall()
+        cur.close()
+        return render_template('comments.html', comments=comments, course_code=course_code)
+    elif request.method == 'POST':
+        try:
+            comment = request.form['comment']
+            uid = session['username']
+            cur = mysql.connection.cursor()
+            cur.execute("""
+                INSERT INTO Comments (course_code, uid, comment)
+                VALUES (%s, %s, %s)
+            """, (course_code, uid, comment))
+            mysql.connection.commit()
+            cur.close()
+            cur = mysql.connection.cursor()
+            cur.execute("""
+                SELECT u.first_name, u.last_name, c.comment, c.cid, u.uid
+                FROM Comments c
+                JOIN Users u ON c.uid = u.uid
+                WHERE c.course_code = %s
+            """, (course_code,))
+            comments = cur.fetchall()
+            cur.close()
+            return render_template('comments.html', comments=comments, course_code=course_code)
+        except:
+            cur = mysql.connection.cursor()
+            cur.execute("""
+            SELECT u.first_name, u.last_name, c.comment, c.cid, u.uid
+            FROM Comments c
+            JOIN Users u ON c.uid = u.uid
+            WHERE c.course_code = %s
+            """, (course_code,))
+            comments = cur.fetchall()
+            cur.close()
+            return render_template('comments.html', comments=comments, course_code=course_code)
+
+@app.route('/comments/delete/<cur_uid>/<cid>/<course_code>', methods=['POST'])
+def delete_comment(cur_uid, cid, course_code):
+    try:
+        uid = session['username']
+        if uid == cur_uid:
+            cur = mysql.connection.cursor()
+            cur.execute("""
+                DELETE FROM Comments
+                WHERE cid = %s AND uid = %s
+            """, (cid, uid))
+            mysql.connection.commit()
+            cur.close()
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            SELECT u.first_name, u.last_name, c.comment, c.cid, u.uid
+            FROM Comments c
+            JOIN Users u ON c.uid = u.uid
+            WHERE c.course_code = %s
+        """, (course_code,))
+        comments = cur.fetchall()
+        cur.close()
+        return render_template('comments.html', comments=comments, course_code=course_code)
+    except:
+        cur = mysql.connection.cursor()
+        cur.execute("""
+        SELECT u.first_name, u.last_name, c.comment, c.cid, u.uid
+        FROM Comments c
+        JOIN Users u ON c.uid = u.uid
+        WHERE c.course_code = %s
+        """, (course_code,))
+        comments = cur.fetchall()
+        cur.close()
+        return render_template('comments.html', comments=comments, course_code=course_code)
 
 
 if __name__ == '__main__':

@@ -4,6 +4,11 @@
 <head>
     <title>Search Results</title>
     <link rel="stylesheet" href="../static/styles/styles.css">
+    <script>
+        function openComments(course_code) {
+            window.open("{{ url_for('handle_comments', course_code='__course_code__') }}".replace('__course_code__', course_code), "Comments", "height=600,width=600");
+        }
+    </script>
 </head>
 <body>
     <a href="/">Back</a> 
@@ -43,6 +48,7 @@
                     <button type="submit", name = 'action', value = "Taken">Add Course as Taken</button>
                     <button type="submit", name = 'action', value = "Planned">Add Course to Plan</button>
                 </form>
+                <button onclick="openComments('{{ course.course_code }}')" style="display: inline; margin-top: 5px;">See Comments</button>
             </li>
         {% endfor %}
         </ul>

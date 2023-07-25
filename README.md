@@ -84,7 +84,7 @@ Before importing the tables, run the ```createtables.sql``` in your mySQL workbe
 Then we want to import the data from the Waterloo API. We run the following command in the directory's root.
 
 ```bash
-$ python productionDB/call_api.py
+$ python call_api.py
 ```
 
 Then click the link to the web application, as the web application loads, it is importing the data.

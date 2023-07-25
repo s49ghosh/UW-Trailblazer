@@ -5,16 +5,7 @@
   <link rel="stylesheet" href="../static/styles/styles.css">
 </head>
 <body>
-  <h2>Top Courses</h2>
-    <form action="/charts" method="get">
-      <select name="amount">
-          <option value="All" selected> Number </option>
-          {% for num in top %}
-            <option value="{{ num }}">{{ num }}</option>
-          {% endfor %}
-      </select>
-        <button type="submit">Refresh</button>
-    </form>
+  <a href="/">Back</a> 
     <table>
       <tr>
         <th>Course</th>

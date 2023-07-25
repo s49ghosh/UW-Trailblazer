@@ -13,21 +13,6 @@
     {% else %}
     <p> You are currently not signed in.</p>
     {% endif %}
-    <h2>Users</h2>
-    <ul>
-        {% for user in users %}
-        <li>{{ user.uid }} {{ user.first_name }} {{ user.last_name }} {{ user.start_year }} </li>
-        {% endfor %}
-    </ul>
-
-    <h2>Add User</h2>
-    <form action="/add" method="post">
-        <input type="text" name="uid" placeholder="waterloo id" required>
-        <input type="text" name="fname" placeholder="first name" required>
-        <input type="text" name="lname" placeholder="last name" required>
-        <button type="submit">Add User</button>
-    </form>
-
 
     <h2>Course Search</h2>
     <form method="POST" action="{{ url_for('search') }}">
@@ -104,6 +89,8 @@
         </select>
         <button type="submit">View Friend's Courses</button>
     </form>
+    {% else %}
+    <p> Please sign in to view your friends' courses.</p>
     {% endif %}
 
     <h2>Friends Taking a Course</h2>
@@ -116,6 +103,8 @@
         </select>
         <button type="submit">View Friends in Course</button>
     </form>
+    {% else %}
+    <p> Please sign in to view your friends who are taking a specific course.</p>
     {% endif %}
 </body>
 </html>

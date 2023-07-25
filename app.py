@@ -15,9 +15,9 @@ app = Flask(__name__)
 # Configure MySQL
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Jingman20020813'
-app.config['MYSQL_DB'] = 'testdb'
+app.config['MYSQL_USER'] = ''
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = ''
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 
 
@@ -44,7 +44,7 @@ with app.app_context():
 
 
 
-def generate_confirmation_token(email):
+def genToken(email):
     serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
     return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
 
@@ -75,7 +75,7 @@ def confirm_token(token, expiration=3600):
     return email
 
 
-def send_email(to, subject, template):
+def sendEmail(to, subject, template):
     msg = Message(
         subject,
         recipients=[to],
@@ -141,11 +141,11 @@ def signup():
         cur.close()
 
         # Send confirmation email
-        token = generate_confirmation_token(email)
+        token = genToken(email)
         confirm_url = url_for('confirm_email', token=token, _external=True)
         html = render_template('activate.html', confirm_url=confirm_url)
         subject = "Please confirm your email"
-        send_email(email, subject, html)
+        sendEmail(email, subject, html)
 
         return redirect('/')
 

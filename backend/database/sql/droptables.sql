@@ -1,4 +1,5 @@
 -- Drops all tables
+DROP TABLE IF EXISTS comments CASCADE;
 DROP TABLE IF EXISTS ratings CASCADE;
 DROP TABLE IF EXISTS usertakencourses CASCADE;
 DROP TABLE IF EXISTS userplannedcourses CASCADE;

@@ -140,7 +140,6 @@ def signup():
         mysql.connection.commit()
         cur.close()
 
-        # Send confirmation email
         token = genToken(email)
         confirm_url = url_for('confirm_email', token=token, _external=True)
         html = render_template('activate.html', confirm_url=confirm_url)

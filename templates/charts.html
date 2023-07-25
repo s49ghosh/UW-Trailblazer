@@ -9,12 +9,16 @@
     <table>
       <tr>
         <th>Course</th>
+        <th>Code</th>
         <th>Rating</th>
+        <th>Number of Ratings</th>
       </tr>
       {% for i in range(courses|length) %}
         <tr>
           <td>{{ courses[i] }}</td>
+          <td>{{ codes[i] }}</td>
           <td>{{ ratings[i] }}</td>
+          <td>{{ numRatings[i] }}</td>
         </tr>
       {% endfor %}
       </table>

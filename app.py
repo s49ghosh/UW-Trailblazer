@@ -6,11 +6,14 @@ import bcrypt
 from call_api import API_calls
 import traceback
 import ast
+from flask_mail import Mail, Message
+import secrets
+from itsdangerous import URLSafeTimedSerializer
 
 app = Flask(__name__)
 
 # Configure MySQL
-app.config['SECRET_KEY'] = 'your_secret_key'
+app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = ''
 app.config['MYSQL_PASSWORD'] = ''
@@ -21,10 +24,65 @@ app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 # Initialize MySQL
 mysql = MySQL(app)
 
+
+app.config['MAIL_SERVER']='smtp-mail.outlook.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USERNAME'] = 'cs348ProjectGroup28@outlook.com'
+app.config['MAIL_PASSWORD'] = 'cs348cs348'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['SECURITY_PASSWORD_SALT'] = secrets.token_hex(16)
+
+
+mail = Mail(app)
+
+
 with app.app_context():
     print("importing data")
     # comment the following line if don't want to use production data
     #API_calls(app, mysql)
+
+
+
+def genToken(email):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
+
+@app.route('/confirm_email/<token>')
+def confirm_email(token):
+    try:
+        email = confirm_token(token)
+    except:
+        flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('login'))
+    cur = mysql.connection.cursor()
+    cur.execute("UPDATE Users SET confirmed = %s WHERE email = %s", (True, email))
+    mysql.connection.commit()
+    flash('You have confirmed your account. Thanks!', 'success')
+    return redirect(url_for('login'))
+
+
+def confirm_token(token, expiration=3600):
+    serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+    try:
+        email = serializer.loads(
+            token,
+            salt=app.config['SECURITY_PASSWORD_SALT'],
+            max_age=expiration
+        )
+    except:
+        return False
+    return email
+
+
+def sendEmail(to, subject, template):
+    msg = Message(
+        subject,
+        recipients=[to],
+        html=template,
+        sender=app.config['MAIL_USERNAME']
+    )
+    mail.send(msg)
 
 
 @app.route('/')
@@ -56,11 +114,11 @@ def index():
 
     return render_template('index.html', users=users, takenCourses=takenCourses, subjectDropdown=subject, termDropdown=termdropdown, friends=friends, plannedCourses=plannedCourses)
 
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
+        email = request.form['email']
         first_name = request.form['fname']
         last_name = request.form['lname']
         password = request.form['password']
@@ -75,19 +133,23 @@ def signup():
 
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-        cur.execute("INSERT INTO Users (uid, first_name, last_name) VALUES (%s, %s, %s)", (username, first_name, last_name))
+        cur.execute("INSERT INTO Users (uid, first_name, last_name, email, confirmed) VALUES (%s, %s, %s, %s, %s)", (username, first_name, last_name, email, False))
         mysql.connection.commit()
 
         cur.execute("INSERT INTO LoginDetails (uid, password) VALUES (%s, %s)", (username, hashed_password))
         mysql.connection.commit()
         cur.close()
 
-        session['username'] = username
-        session['fname'] = first_name
-        session['lname'] = last_name
+        token = genToken(email)
+        confirm_url = url_for('confirm_email', token=token, _external=True)
+        html = render_template('activate.html', confirm_url=confirm_url)
+        subject = "Please confirm your email"
+        sendEmail(email, subject, html)
+
         return redirect('/')
 
     return render_template('signup.html')
+
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -97,24 +159,50 @@ def login():
         password = request.form['password']
 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM LoginDetails WHERE uid = %s", (username,))
+        cur.execute("SELECT * FROM LoginDetails JOIN Users ON LoginDetails.uid = Users.uid WHERE LoginDetails.uid = %s AND Users.confirmed = 1", (username,))
         user = cur.fetchone()
         cur.close()
 
         if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
             session['username'] = username
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM Users WHERE uid = %s", (username,))
-            userDetails = cur.fetchone()
-            cur.close()
-            session['fname'] = userDetails['first_name']
-            session['lname'] = userDetails['last_name']
+            session['fname'] = user['first_name']
+            session['lname'] = user['last_name']
             return redirect('/')
         else:
-            error = 'Invalid username or password.'
+            error = 'Invalid username or password or email not confirmed.'
             return render_template('login.html', error=error)
 
     return render_template('login.html')   
+
+
+@app.route('/confirmed', methods=['GET', 'POST'])
+def confirmed_email():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM LoginDetails WHERE uid = %s", (username,))
+        user = cur.fetchone()
+
+        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+            cur.execute("UPDATE Users SET confirmed = 1 WHERE uid = %s", (username,))
+            mysql.connection.commit()
+
+            cur.execute("SELECT * FROM LoginDetails JOIN Users ON LoginDetails.uid = Users.uid WHERE LoginDetails.uid = %s", (username,))
+            user = cur.fetchone()
+            cur.close()
+
+            session['username'] = username
+            session['fname'] = user['first_name']
+            session['lname'] = user['last_name']
+            return redirect('/')
+        else:
+            error = 'Invalid username or password or email not confirmed.'
+            return render_template('confirmed.html', error=error)
+
+    return render_template('confirmed.html')   
+
 
 
 @app.route('/logout')
@@ -308,15 +396,24 @@ def get_friends_same_course():
 @app.route('/charts', methods=['GET']) 
 def viewTopRated():
     cur = mysql.connection.cursor()
+    num = request.args.get('amount')
+    if not num:
+        num = 100
+    num = int(num)
     try:
-        cur.execute("SELECT course_name, rating FROM courses ORDER BY rating DESC")
+        cur.execute("""SELECT T.course_name, T.rating, course_code, COUNT(T1.takens) AS num_takens
+                        FROM
+                            (SELECT course_name, rating, course_code FROM courses ORDER BY rating DESC LIMIT %s) AS T
+                        LEFT JOIN
+                            (SELECT course_code AS takens FROM ratings) AS T1 ON T.course_code = T1.takens
+                        GROUP BY T.course_name, T.rating, T.course_code;""", (num,))
         result = cur.fetchall()
         courses = [row['course_name'] for row in result]
         ratings = [row['rating'] for row in result]
-        if len(courses) > 100:
-            courses = courses[0:101]
-            ratings = ratings[0:101]
-        return render_template('charts.html', courses=courses, ratings=ratings)
+        codes = [row['course_code'] for row in result]
+        numRatings = [row['num_takens'] for row in result]
+        topN = [10, 25, 50, 100, 200]
+        return render_template('charts.html', courses=courses, ratings=ratings, codes=codes, numRatings=numRatings, top=topN)
     except Exception as e:
         traceback.print_exc()
         return f'Error: {str(e)}'

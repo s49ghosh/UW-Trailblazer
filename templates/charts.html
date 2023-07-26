@@ -9,7 +9,7 @@
   <h2>Top Courses</h2>
     <form action="/charts" method="get">
       <select name="amount">
-          <option value="All" selected> Number </option>
+          <option value="100" selected> Number </option>
           {% for num in top %}
             <option value="{{ num }}">{{ num }}</option>
           {% endfor %}

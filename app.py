@@ -353,7 +353,7 @@ def get_friend_courses():
     cur = mysql.connection.cursor()
 
     cur.execute("""
-        SELECT DISTINCT uf.friend_id, c.course_code, c.course_name, s.subject_name, s.avg_rating
+        SELECT DISTINCT c.course_code, c.course_name, s.subject_name, c.rating
         FROM userfriends uf
         JOIN users u ON uf.friend_id = u.uid
         JOIN userplannedcourses ut ON u.uid = ut.uid

@@ -120,4 +120,9 @@ VALUES
 SELECT * FROM LoginDetails WHERE uid = 1;
 SELECT * FROM Users WHERE uid = 1;
 
-SELECT course_name, rating FROM courses ORDER BY rating DESC LIMIT 10;
+SELECT T.course_name, T.rating, course_code, COUNT(T1.takens) AS num_takens
+FROM
+    (SELECT course_name, rating, course_code FROM courses ORDER BY rating DESC LIMIT %s) AS T
+LEFT JOIN
+    (SELECT course_code AS takens FROM ratings) AS T1 ON T.course_code = T1.takens
+GROUP BY T.course_name, T.rating, T.course_code

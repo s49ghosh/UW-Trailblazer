@@ -51,7 +51,7 @@ uid     password
 uid     first_name      last_name
 1       John            Doe
 
-course_name                         rating
-Introduction to Programming         5.00
-Calculus I                          3.00
-Classical Mechanics                 3.00
+course_name                                             rating              course_code             num_takens
+Introduction to Programming                             5.00	            COURSE2	                1
+Calculus I                                              3.00	            COURSE1	                2
+Classical Mechanic                                      3.00	            COURSE3	                1

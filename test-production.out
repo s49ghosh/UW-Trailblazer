@@ -73,14 +73,15 @@ uid     password
 uid     first_name	last_name
 1	     John	    Doe
 
-course_name                                         rating
-Algorithms	                                        5.00
-Operating Systems	                                4.00
-Object-Oriented Software Development	            4.00
-Data Structures and Data Management                4.00
-Elementary Algorithm Design and Data Abstraction	3.50
-Foundations of Sequential Programs	                3.00
-Digital Computers	                                2.50
-Logic and Computation	                            1.00
-International Tax	                                0.00
-Financial Statement Analysis	                    0.00
+
+course_name                                             rating              course_code             num_takens 
+Algorithms	                                            5.00	            CS 341	                1
+Operating Systems	                                    4.00	            CS 350	                1
+Object-Oriented Software Development	                4.00	            CS 246	                1
+Data Structures and Data Management                    4.00	            CS 240	                2
+Elementary Algorithm Design and Data Abstraction	    3.50	            CS 136	                2
+Foundations of Sequential Programs	                    3.00	            CS 241	                1
+Digital Computers	                                    2.50	            ECE 222	                2
+Logic and Computation	                                1.00	            CS 245	                1
+International Tax	                                    0.00	            ACC 605	                0
+Financial Statement Analysis	                        0.00	            ACC 609	                0

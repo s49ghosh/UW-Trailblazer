@@ -98,5 +98,5 @@ CREATE TABLE Comments (
     comment TEXT,
     FOREIGN KEY (course_code) REFERENCES Courses(course_code),
     FOREIGN KEY (uid) REFERENCES Users(uid)
-)
+);
 

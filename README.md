@@ -35,6 +35,19 @@ in the database. (Implemented in app.py, index.html, signup.html and login.html,
 6. Displays the highest-rated courses in the web application. Users can see this by clicking the "View Top Rated Courses"
 button on the homepage. Implemented in index.html, charts.html, and app.py
 
+### Fancy Features 
+Final / Demo
+
+1. Better User Experience - Nice looking UI for all the pages (Helen)
+
+2. Security - Email confirmation after sign-up. Does not allow a user with unconfirmed email to log in. (Jasmine)
+
+3. Efficiency - Prerequisite selecting algorithm (Jasmine)
+
+4. Extra Functionality - Comment section for each course, can view and delete comments. (Jasmine)
+
+5. Security - trying to find ways to break the application (ex. sql injection) (Sohom)
+
 ## Installation
 
 Make sure you have python3 and pip installed

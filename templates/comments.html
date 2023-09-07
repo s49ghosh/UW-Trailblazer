@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comments</title>
+    <link rel="stylesheet" href="../static/styles/styles.css">
+</head>
+<body>
+    <h1>Comments</h1>
+    <ul>
+        {% for comment in comments %}
+            <li>
+                <p>{{ comment.first_name }} {{ comment.last_name }}: {{ comment.comment }}</p>
+                <form method="POST" action="{{ url_for('delete_comment', cur_uid=comment.uid, cid = comment.cid, course_code=course_code) }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <form method="POST" action="{{ url_for('handle_comments', course_code=course_code) }}">
+        <input type="text" name="comment" placeholder="Enter a comment">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

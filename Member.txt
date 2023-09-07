@@ -11,3 +11,8 @@ Jasmine Xu (20881223): C4, R4, R7c, R7d
 Kevin Zhang (20887940): C5, R9c
 Sohom Ghosh (20895880): C3, C4, C5, R5, R6c, R6d, R11a, R11b, R11c, R11d
 
+Final & Demo:
+Helen Xia (20880366): R12, D3, D2
+Jasmine Xu (20881223): R13, R14, R15, D2, D4, D5
+Kevin Zhang (20887940): D2
+Sohom Ghosh (20895880): R16, D1, D2

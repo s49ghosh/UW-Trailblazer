@@ -26,6 +26,19 @@ in the database.
 6. Displays the highest-rated courses in the web application. Users can see this by clicking the "View Top Rated Courses"
 button on the homepage.
 
+### Fancy Features 
+Final / Demo
+
+1. Better User Experience - Nice looking UI for all the pages (Helen)
+
+2. Security - Email confirmation after sign-up. Does not allow a user with unconfirmed email to log in. (Jasmine)
+
+3. Efficiency - Prerequisite selecting algorithm (Jasmine)
+
+4. Extra Functionality - Comment section for each course, can view and delete comments. (Jasmine)
+
+5. Security - trying to find ways to break the application (ex. sql injection) (Sohom)
+
 ## Installation
 
 Make sure you have python3 and pip installed
@@ -75,7 +88,7 @@ Before importing the tables, run the ```createtables.sql``` in your mySQL workbe
 Then we want to import the data from the Waterloo API. We run the following command in the directory's root.
 
 ```bash
-$ python productionDB/call_api.py
+$ python call_api.py
 ```
 
 Then click the link to the web application, as the web application loads, it is importing the data.

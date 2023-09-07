@@ -4,7 +4,9 @@
 CREATE TABLE Users (
     uid INT PRIMARY KEY NOT NULL,
     first_name TEXT,
-    last_name TEXT
+    last_name TEXT,
+    email TEXT,
+    confirmed BOOL
 );
 
 
@@ -88,3 +90,13 @@ CREATE TABLE LoginDetails (
     password VARCHAR(100) NOT NULL,
     FOREIGN KEY (uid) REFERENCES Users(uid)
 );
+
+CREATE TABLE Comments (
+    cid INT AUTO_INCREMENT PRIMARY KEY,
+    course_code VARCHAR(255) NOT NULL,
+    uid INT NOT NULL,
+    comment TEXT,
+    FOREIGN KEY (course_code) REFERENCES Courses(course_code),
+    FOREIGN KEY (uid) REFERENCES Users(uid)
+);
+

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Account Activation</title>
+    </head>
+    <body>
+        <h2>Account Activation</h2>
+        {% if error %}
+            <p>{{ error }}</p>
+        {% else %}
+            <p>Thank you for register your email address. Please click this <a href="http://127.0.0.1:5000/confirmed">link</a> to confirm.</p>
+        {% endif %}
+    </body>
+</html>

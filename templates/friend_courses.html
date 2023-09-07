@@ -3,12 +3,14 @@
 <head>
     <title>Common Courses</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="stylesheet" href="../static/styles/styles.css">
 </head>
 <body>
+    <a href="/">Back</a> 
     <h1>Common Courses</h1>
     <ul>
         {% for course in courses %}
-            <li>{{ course.course_code }} {{ course.course_name }} {{ course.subject_name }} {{ course.avg_rating }}</li>
+            <li>{{ course.course_code }} {{ course.course_name }} {{ course.subject_name }} {{ course.rating }}</li>
         {% endfor %}
         </ul>        
 </body>
